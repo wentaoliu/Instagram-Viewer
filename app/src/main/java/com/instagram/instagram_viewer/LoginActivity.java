@@ -40,6 +40,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.FormBody;
 
 
 /**
@@ -317,22 +318,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // TODO: attempt authentication against a network service.
 
             try {
-                // Simulate network access.
-                //Thread.sleep(2000);
-
-                String json = "{\"username\":\""+ mEmail +"\",\"password\":\"" + mPassword + "\"}";
-                String response = post("http://192.168.1.6:8000/api-token-auth", json);
+                RequestBody formBody = new FormBody.Builder()
+                        .add("username", mEmail)
+                        .add("password", mPassword)
+                        .build();
+                String response = post("http://imitagram.wnt.io/api-token-auth", formBody);
                 System.out.println(response);
             } catch (IOException e) {
                 return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
             }
 
             // TODO: register the new account here.
@@ -364,8 +357,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     OkHttpClient client = new OkHttpClient();
 
-    String post(String url, String json) throws IOException {
-        RequestBody body = RequestBody.create(JSON, json);
+    String post(String url, RequestBody body) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
