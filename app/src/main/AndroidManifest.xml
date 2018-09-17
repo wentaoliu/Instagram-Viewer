@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.instagram.instagram_viewer.SignupActivity" android:theme="@style/AppTheme.Dark"  />
+        <activity android:name="com.instagram.instagram_viewer.MainActivity" android:theme="@style/AppTheme.Dark"  />
     </application>
 
 </manifest>

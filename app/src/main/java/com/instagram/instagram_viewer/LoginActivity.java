@@ -98,7 +98,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                //attemptLogin();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
 
@@ -338,6 +341,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         .add("password", mPassword)
                         .build();
                 String response = post("http://imitagram.wnt.io/api-token-auth", formBody);
+                if (response.contains("token")){
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    String[] tmp = response.split(":");
+                    String token = tmp[1].replace("\"","");
+                    String token_final = "token "+ token.trim();
+
+                    intent.putExtra("token",token_final);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                }
                 System.out.println(response);
             } catch (IOException e) {
                 return false;

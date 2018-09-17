@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -39,7 +40,7 @@ public class SignupActivity extends AppCompatActivity {
 
         mEmailView = (EditText) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView = (EditText) findViewById(R.id.reEnterPassword);
+        mReEnterPasswordView = (EditText) findViewById(R.id.reEnterPassword);
         mSignUpButton = (Button) findViewById(R.id.btn_signup);
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,12 +162,22 @@ public class SignupActivity extends AppCompatActivity {
             // TODO: attempt authentication against a network service.
 
             try {
-                // Simulate network access.
-                //Thread.sleep(2000);
+                RequestBody formBody = new FormBody.Builder()
+                        .add("username", mEmail)
+                        .add("password1", mPassword1)
+                        .add("password2",mPassword2)
+                        .build();
+                String response = post("http://imitagram.wnt.io/register", formBody);
+                if (response.contains("key")){
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    String[] tmp = response.split(":");
+                    String token = tmp[1].replace("\"","");
+                    String token_final = "token "+ token.trim();
 
-                String json = "{\"username\":\""+ mEmail +"\",\"password1\":\"" + mPassword1 + "\",\"password2\":\""+ mPassword2 + "\"}";
-                String response = post("http://192.168.1.6:8000/register", json);
-                System.out.println(response);
+                    intent.putExtra("token",token_final);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                }
             } catch (IOException e) {
                 return false;
             }
@@ -182,8 +193,7 @@ public class SignupActivity extends AppCompatActivity {
 
     OkHttpClient client = new OkHttpClient();
 
-    String post(String url, String json) throws IOException {
-        RequestBody body = RequestBody.create(JSON, json);
+    String post(String url,RequestBody body) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
