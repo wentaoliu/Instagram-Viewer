@@ -18,6 +18,6 @@
         android:title="ActivityFeed" />
     <item
         android:id="@+id/navigation_Profile"
-        android:icon="@drawable/iv4_p"
+        android:icon="@drawable/iv5_p"
         android:title="Profile" />
 </menu>

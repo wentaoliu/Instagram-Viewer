@@ -25,6 +25,13 @@
         </activity>
         <activity android:name="com.instagram.instagram_viewer.SignupActivity" android:theme="@style/AppTheme.Dark"  />
         <activity android:name="com.instagram.instagram_viewer.MainActivity" android:theme="@style/AppTheme.Dark"  />
+        <activity
+            android:name="com.instagram.instagram_viewer.CommentsActivity"
+            android:label="@string/comments_caption"
+            android:theme="@style/AppTheme.Dark"
+            >
+
+        </activity>
     </application>
 
 </manifest>

@@ -17,9 +17,11 @@ public class MainActivity extends AppCompatActivity {
     private ViewPagerAdapter viewPagerAdapter;
     private ViewPager viewPager;
     private MenuItem menuItem;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        token = getIntent().getStringExtra("token");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         List<Fragment> list = new ArrayList<>();
-        list.add(TestFragment.newInstance("UserFeed"));
+        list.add(getInstance(token));
         list.add(TestFragment.newInstance("Discover"));
         list.add(TestFragment.newInstance("UploadPhoto"));
         list.add(TestFragment.newInstance("ActivityFeed"));
@@ -79,10 +81,24 @@ public class MainActivity extends AppCompatActivity {
                     viewPager.setCurrentItem(3);
                     return true;
                 case R.id.navigation_Profile:
-                    viewPager.setCurrentItem(3);
+                    viewPager.setCurrentItem(4);
                     return true;
             }
             return false;
         }
     };
+    public static UserFeedFragment getInstance(String arg1){
+
+        Bundle bundle = new Bundle();
+
+        bundle.putString("token",arg1);
+
+
+        UserFeedFragment fragment = new UserFeedFragment();
+
+        fragment.setArguments(bundle);
+
+        return fragment;
+
+    }
 }
