@@ -178,6 +178,7 @@ public class SignupActivity extends AppCompatActivity {
                     startActivity(intent);
                     overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
+                System.out.println(response);
             } catch (IOException e) {
                 return false;
             }

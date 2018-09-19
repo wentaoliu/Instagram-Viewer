@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         List<Fragment> list = new ArrayList<>();
-        list.add(getInstance(token));
+      //  list.add(getInstance(token));
+        list.add(TestFragment.newInstance("UserFeed"));
         list.add(TestFragment.newInstance("Discover"));
         list.add(TestFragment.newInstance("UploadPhoto"));
         list.add(TestFragment.newInstance("ActivityFeed"));
