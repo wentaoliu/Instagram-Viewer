@@ -21,6 +21,7 @@ public class InstagramPhoto {
 
     public String getRelativeTime() {
         long ct = Long.parseLong(createdTime);
+        //long ct = System.currentTimeMillis()-1000;
         long now = System.currentTimeMillis() / 1000;
         long elapsedSeconds = now - ct;
 

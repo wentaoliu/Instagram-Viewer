@@ -83,21 +83,6 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
             tvViewAllComments.setVisibility(View.GONE);
         }
 
-        // Set last 2 comments
-        if (photo.comment1 != null) {
-            tvComment1.setText(Html.fromHtml("<font color='#3f729b'><b>" + photo.user1 + "</b></font> " + photo.comment1));
-            tvComment1.setVisibility(View.VISIBLE);
-        } else {
-            tvComment1.setVisibility(View.GONE);
-        }
-
-        if (photo.comment2 != null) {
-            tvComment2.setText(Html.fromHtml("<font color='#3f729b'><b>" + photo.user2 + "</b></font> " + photo.comment2));
-            tvComment2.setVisibility(View.VISIBLE);
-        } else {
-            tvComment2.setVisibility(View.GONE);
-        }
-
         // use device width for photo height
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
         imgPhoto.getLayoutParams().height = displayMetrics.widthPixels;

@@ -129,52 +129,63 @@ public class UserFeedFragment extends Fragment {
     OkHttpClient client = new OkHttpClient();
 
     void get(String url,String token) throws IOException {
-        Request request = new Request.Builder()
-                .url(url)
-                .addHeader("Authorization",token)
-                .build();
-        JSONArray photosJSON = null;
-        JSONArray commentsJSON = null;
-        try (Response response = client.newCall(request).execute()) {
-            stringTemp = response.body().string();
-            jsonObjectTemp = new JSONObject(stringTemp);
-            photos.clear();
-            photosJSON = (JSONArray) jsonObjectTemp.get("data");
-            for (int i = 0; i < photosJSON.length(); i++) {
-                JSONObject photoJSON = photosJSON.getJSONObject(i); // 1, 2, 3, 4
-                InstagramPhoto photo = new InstagramPhoto();
-                photo.profileUrl = photoJSON.getJSONObject("user").getString("profile_picture");
-                photo.username = photoJSON.getJSONObject("user").getString("username");
-                // caption may be null
-                if (photoJSON.has("caption") && !photoJSON.isNull("caption")) {
-                    photo.caption = photoJSON.getJSONObject("caption").getString("text");
-                }
-                photo.createdTime = photoJSON.getString("created_time");
-                photo.imageUrl = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
-                photo.imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
-                photo.likesCount = photoJSON.getJSONObject("likes").getInt("count");
-                // Get last 2 comments
-                if (photoJSON.has("comments") && !photoJSON.isNull("comments")) {
-                    photo.commentsCount = photoJSON.getJSONObject("comments").getInt("count");
-                    commentsJSON = photoJSON.getJSONObject("comments").getJSONArray("data");
-                    if (commentsJSON.length() > 0) {
-                        photo.comment1 = commentsJSON.getJSONObject(commentsJSON.length() - 1).getString("text");
-                        photo.user1 = commentsJSON.getJSONObject(commentsJSON.length() - 1).getJSONObject("from").getString("username");
-                        if (commentsJSON.length() > 1) {
-                            photo.comment2 = commentsJSON.getJSONObject(commentsJSON.length() - 2).getString("text");
-                            photo.user2 = commentsJSON.getJSONObject(commentsJSON.length() - 2).getJSONObject("from").getString("username");
-                        }
-                    } else {
-                        photo.commentsCount = 0;
-                    }
-                }
-                photo.id = photoJSON.getString("id");
-                photos.add(photo);
-                aPhotos.notifyDataSetChanged();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        InstagramPhoto photo = new InstagramPhoto();
+        photo.profileUrl = "http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
+        photo.createdTime = "1522340983";
+        photo.imageUrl = "http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
+        photo.username = "kevin";
+        photo.imageHeight = 500;
+        photo.likesCount = 100;
+        photo.commentsCount = 100;
+        photo.id = "1";
+        photos.add(photo);
+        aPhotos.notifyDataSetChanged();
+//        Request request = new Request.Builder()
+//                .url(url)
+//                .addHeader("Authorization",token)
+//                .build();
+//        JSONArray photosJSON = null;
+//        JSONArray commentsJSON = null;
+//        try (Response response = client.newCall(request).execute()) {
+//            stringTemp = response.body().string();
+//            jsonObjectTemp = new JSONObject(stringTemp);
+//            photos.clear();
+//            photosJSON = (JSONArray) jsonObjectTemp.get("data");
+//            for (int i = 0; i < photosJSON.length(); i++) {
+//                JSONObject photoJSON = photosJSON.getJSONObject(i); // 1, 2, 3, 4
+//                InstagramPhoto photo = new InstagramPhoto();
+//                photo.profileUrl = photoJSON.getJSONObject("user").getString("profile_picture");
+//                photo.username = photoJSON.getJSONObject("user").getString("username");
+//                // caption may be null
+//                if (photoJSON.has("caption") && !photoJSON.isNull("caption")) {
+//                    photo.caption = photoJSON.getJSONObject("caption").getString("text");
+//                }
+//                photo.createdTime = photoJSON.getString("created_time");
+//                photo.imageUrl = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
+//                photo.imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
+//                photo.likesCount = photoJSON.getJSONObject("likes").getInt("count");
+//                // Get last 2 comments
+//                if (photoJSON.has("comments") && !photoJSON.isNull("comments")) {
+//                    photo.commentsCount = photoJSON.getJSONObject("comments").getInt("count");
+//                    commentsJSON = photoJSON.getJSONObject("comments").getJSONArray("data");
+//                    if (commentsJSON.length() > 0) {
+//                        photo.comment1 = commentsJSON.getJSONObject(commentsJSON.length() - 1).getString("text");
+//                        photo.user1 = commentsJSON.getJSONObject(commentsJSON.length() - 1).getJSONObject("from").getString("username");
+//                        if (commentsJSON.length() > 1) {
+//                            photo.comment2 = commentsJSON.getJSONObject(commentsJSON.length() - 2).getString("text");
+//                            photo.user2 = commentsJSON.getJSONObject(commentsJSON.length() - 2).getJSONObject("from").getString("username");
+//                        }
+//                    } else {
+//                        photo.commentsCount = 0;
+//                    }
+//                }
+//                photo.id = photoJSON.getString("id");
+//                photos.add(photo);
+//                aPhotos.notifyDataSetChanged();
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
         swipeContainer.setRefreshing(false);
     }
     String getToken(){

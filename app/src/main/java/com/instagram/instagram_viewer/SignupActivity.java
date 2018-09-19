@@ -172,7 +172,8 @@ public class SignupActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     String[] tmp = response.split(":");
                     String token = tmp[1].replace("\"","");
-                    String token_final = "token "+ token.trim();
+                    String token1 = token.replace("}","");
+                    String token_final = "token "+ token1.trim();
 
                     intent.putExtra("token",token_final);
                     startActivity(intent);

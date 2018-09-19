@@ -28,7 +28,6 @@
         <activity
             android:name="com.instagram.instagram_viewer.CommentsActivity"
             android:label="@string/comments_caption"
-            android:theme="@style/AppTheme.Dark"
             >
 
         </activity>
