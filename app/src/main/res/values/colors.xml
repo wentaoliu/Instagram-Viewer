@@ -17,4 +17,7 @@
     <color name="tab_checked">#ED6A2C</color>
     <color name="tab_unchecked">#757575</color>
     <color name="instagram_bold_font">#3f729b</color>
+    <color name="grey">#ececec</color>
+    <color name="txtgrey">#7c7b7b</color>
+    <color name="mainColor">#4dc445</color>
 </resources>

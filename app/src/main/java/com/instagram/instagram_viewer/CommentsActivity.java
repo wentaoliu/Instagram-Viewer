@@ -1,10 +1,22 @@
 package com.instagram.instagram_viewer;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity ;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -23,11 +35,19 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-public class CommentsActivity extends AppCompatActivity  {
+public class CommentsActivity extends AppCompatActivity {
     private ArrayList<Comment> comments;
     private CommentsAdapter aComments;
     private String id;
     private String token;
+    private ImageView comment;
+    private TextView hide_down;
+    private EditText comment_content;
+    private Button comment_send;
+
+    private LinearLayout rl_enroll;
+    private RelativeLayout rl_comment;
+
 
     String stringTemp;
     JSONObject jsonObjectTemp = new JSONObject();
@@ -35,7 +55,7 @@ public class CommentsActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         id = getIntent().getStringExtra("id");
-        token= getIntent().getStringExtra("token");
+        token = getIntent().getStringExtra("token");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
         try {
@@ -81,19 +101,20 @@ public class CommentsActivity extends AppCompatActivity  {
         String commentsUrl = "http://imitagram.wnt.io/media/" + id + "/comments";
 
         // Create the network client
-        get(commentsUrl,token);
+        get(commentsUrl, token);
 
     }
+
     OkHttpClient client = new OkHttpClient();
 
-    void get(String url,String token) throws IOException {
+    void get(String url, String token) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
-                .addHeader("Authorization",token)
+                .addHeader("Authorization", token)
                 .build();
         JSONArray commentsJSON = null;
         Comment comment = new Comment();
-        comment.profileUrl =" http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
+        comment.profileUrl = " http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
         comment.username = "huo";
         comment.text = "helloWorld!helloWorld!helloWorld!helloWorld!helloWorld!helloWorld!helloWorld!";
         comment.createdTime = "1279340983";
@@ -122,4 +143,47 @@ public class CommentsActivity extends AppCompatActivity  {
 //            e.printStackTrace();
 //        }
     }
+
+    private void initView() {
+
+
+//        comment = (ImageView) findViewById(R.id.comment);
+//        hide_down = (TextView) findViewById(R.id.hide_down);
+        comment_content = (EditText) findViewById(R.id.comment_content);
+        comment_send = (Button) findViewById(R.id.comment_send);
+
+//        rl_enroll = (LinearLayout) findViewById(R.id.rl_enroll);
+//        rl_comment = (RelativeLayout) findViewById(R.id.rl_comment);
+
+        comment_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendComment();
+            }
+        });
+
+
+    }
+
+    /**
+     * 发送评论
+     */
+    public void sendComment() {
+//        if(comment_content.getText().toString().equals("")){
+//            Toast.makeText(getApplicationContext(), "评论不能为空！", Toast.LENGTH_SHORT).show();
+//        }else{
+//            // 生成评论数据
+//            Comment comment = new Comment();
+//            comment.setName("评论者"+(data.size()+1)+"：");
+//            comment.setContent(comment_content.getText().toString());
+//            adapterComment.addComment(comment);
+//            // 发送完，清空输入框
+//            comment_content.setText("");
+//
+//            Toast.makeText(getApplicationContext(), "评论成功！", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+    }
+
 }
+

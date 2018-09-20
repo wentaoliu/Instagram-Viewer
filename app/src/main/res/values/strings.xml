@@ -25,4 +25,9 @@
     <string name="view_all_comments_default_text">view all comments</string>
     <string name="title_activity_comments">CommentsActivity</string>
     <string name="comments_caption">Comments</string>
+    <string name="comment_content">Leave a comment</string>
+    <string name="send">Send</string>
+    <string name="hide_down">Hide</string>
+
 </resources>
+

@@ -5,15 +5,106 @@
     tools:context="com.instagram.instagram_viewer.CommentsActivity">
 
     <ListView
+        android:id="@+id/lvComments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:dividerHeight="0dp"
-        android:divider="@null"
-        android:id="@+id/lvComments"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:divider="@null"
+        android:dividerHeight="0dp" />
+
+    <EditText
+        android:id="@+id/comment_content"
+        android:layout_width="330dp"
+        android:layout_height="44dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentStart="true"
+        android:background="@null"
+        android:hint="@string/comment_content"
+        android:singleLine="true"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/comment_send"
+        android:layout_width="50dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:background="@color/mainColor"
+        android:text="@string/send"
+
+        android:textColor="@color/white"
+        android:textSize="13sp" />
+    <!--<LinearLayout-->
+        <!--android:id="@+id/rl_enroll"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:background="@color/white">-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/comment"-->
+            <!--android:layout_width="32dp"-->
+            <!--android:layout_height="32dp"-->
+            <!--android:src="@drawable/comment"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_gravity="center" />-->
+
+    <!--</LinearLayout>-->
+
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/rl_comment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:background="@color/white"-->
+        <!--android:visibility="gone"-->
+        <!--android:layout_alignParentBottom="true">-->
+
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:background="@color/grey" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/hide_down"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/hide_down"-->
+            <!--android:textSize="13sp"-->
+            <!--android:textColor="@color/txtgrey"-->
+            <!--android:drawableBottom="@drawable/hide_dowm"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="10dp"/>-->
+        <!--<View-->
+            <!--android:layout_width="1dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@color/grey"-->
+            <!--android:layout_toRightOf="@id/hide_down"-->
+            <!--android:layout_marginLeft="10dp"/>-->
+        <!--<EditText-->
+            <!--android:id="@+id/comment_content"-->
+            <!--android:hint="@string/comment_content"-->
+            <!--android:textSize="15sp"-->
+            <!--android:singleLine="true"-->
+            <!--android:layout_width="240dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@null"-->
+            <!--android:layout_toRightOf="@id/hide_down"-->
+            <!--android:layout_marginLeft="20dp"/>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/comment_send"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="35dp"-->
+            <!--android:layout_margin="5dp"-->
+            <!--android:text="@string/send"-->
+            <!--android:textSize="13sp"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:background="@color/mainColor"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_marginLeft="15dp"/>-->
+    <!--</RelativeLayout>-->
 </RelativeLayout>
