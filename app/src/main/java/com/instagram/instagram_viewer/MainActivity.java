@@ -53,9 +53,10 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         List<Fragment> list = new ArrayList<>();
-        list.add(getInstance(token));
+        list.add(getInstance1(token));
+        list.add(getInstance2(token));
         //list.add(TestFragment.newInstance("UserFeed"));
-        list.add(TestFragment.newInstance("Discover"));
+        //list.add(TestFragment.newInstance("Discover"));
         list.add(TestFragment.newInstance("UploadPhoto"));
         list.add(TestFragment.newInstance("ActivityFeed"));
         list.add(TestFragment.newInstance("Profile"));
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
-    public static UserFeedFragment getInstance(String arg1){
+    public static UserFeedFragment getInstance1(String arg1){
 
         Bundle bundle = new Bundle();
 
@@ -96,6 +97,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         UserFeedFragment fragment = new UserFeedFragment();
+
+        fragment.setArguments(bundle);
+
+        return fragment;
+
+    }
+    public static DiscoverFragment getInstance2(String arg1){
+
+        Bundle bundle = new Bundle();
+
+        bundle.putString("token",arg1);
+
+
+        DiscoverFragment fragment = new DiscoverFragment();
 
         fragment.setArguments(bundle);
 

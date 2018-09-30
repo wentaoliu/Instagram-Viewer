@@ -29,13 +29,12 @@ public class DiscoverFragment extends Fragment {
 
     private TextView tv;
     public View mView;
-    private SwipeRefreshLayout swipeContainer;
-    private Button sortByTime;
-    private Button sortByDistance;
-    private ListView lvPhotos;
-    private ArrayList<InstagramPhoto> photos;
-    private InstagramPhotosAdapter aPhotos;
-    private InstagramPhotosAdapter bPhotos;
+    private ListView lvUser;
+    private TextView tvSearch;
+    private Button search;
+    private ArrayList<User> users;
+    private UserAdapter aUsers;
+
     private  String token;
 
     String stringTemp;
@@ -54,21 +53,42 @@ public class DiscoverFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.activity_photos, container, false);
-        swipeContainer = (SwipeRefreshLayout) mView.findViewById(R.id.swipeContainer);
-        sortByTime = (Button)mView.findViewById(R.id.sortByTime);
-        sortByDistance = (Button)mView.findViewById(R.id.sortByDistance);
-        lvPhotos = (ListView) mView.findViewById(R.id.lvPhotos);
+        mView = inflater.inflate(R.layout.activity_discover, container, false);
+        tvSearch = (TextView) mView.findViewById(R.id.text_search);
+        search = (Button) mView.findViewById(R.id.search);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    fetchUsers();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        lvUser = (ListView) mView.findViewById(R.id.lvDiscover);
         token = (String)getArguments().get("token");
-//        try {
-////            initRefreshLayout();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         return mView;
     }
 
+    private void fetchUsers() throws IOException {
+        users = new ArrayList<User>(); // initialize arraylist
+        // Create adapter bind it to the data in arraylist
+        aUsers = new UserAdapter(this, users);
+        // Populate the data into the listview
 
+        // Set the adapter to the listview (population of items)
+        lvUser.setAdapter(aUsers);
+        String content = tvSearch.getText().toString();
+        // https://api.instagram.com/v1/media/popular?client_id=<clientid>
+        // { "data" => [x] => "images" => "standard_resolution" => "url" }
+        // Setup popular url endpoint
+        String popularUrl = "http://imitagram.wnt.io/users/search?q="+ content;
+
+        get(popularUrl,token);
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -88,36 +108,13 @@ public class DiscoverFragment extends Fragment {
     OkHttpClient client = new OkHttpClient();
 
     void get(String url,String token) throws IOException {
-        InstagramPhoto photo = new InstagramPhoto();
-        photo.profileUrl = "http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
-        photo.createdTime = "1522340983";
-        photo.imageUrl = "http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
-        photo.username = "kevin";
-        photo.imageHeight = 500;
-        photo.likesCount = 100;
-        photo.commentsCount = 100;
-        photo.id = "1";
-        photo.lat = 121.62;
-        photo.lng = 38.92;
-        photo.distance = 1000;
-        System.out.println(photo.distance);
-        photos.add(photo);
-        aPhotos.notifyDataSetChanged();
-        InstagramPhoto photo1 = new InstagramPhoto();
-        photo1.profileUrl = "http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
-        photo1.createdTime = "1532340983";
-        photo1.imageUrl = "http://img.tupianzj.com/uploads/allhuoimg/141014/1-1410141AH02K.jpg";
-        photo1.username = "robin";
-        photo1.imageHeight = 500;
-        photo1.likesCount = 100;
-        photo1.commentsCount = 100;
-        photo1.id = "1";
-        photo1.lat = 121.62;
-        photo1.lng = 38.92;
-        photo1.distance = 5000;
-        System.out.println(photo.distance);
-        photos.add(photo1);
-        aPhotos.notifyDataSetChanged();
+        User user = new User();
+        user.profileUrl = "http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
+        user.username = "kevin";
+        user.id = 1;
+        users.add(user);
+        aUsers.notifyDataSetChanged();
+
 //        Request request = new Request.Builder()
 //                .url(url)
 //                .addHeader("Authorization",token)
@@ -131,40 +128,16 @@ public class DiscoverFragment extends Fragment {
 //            photosJSON = (JSONArray) jsonObjectTemp.get("data");
 //            for (int i = 0; i < photosJSON.length(); i++) {
 //                JSONObject photoJSON = photosJSON.getJSONObject(i); // 1, 2, 3, 4
-//                InstagramPhoto photo = new InstagramPhoto();
-//                photo.profileUrl = photoJSON.getJSONObject("uploader").getString("profile_picture");
-//                photo.username = photoJSON.getJSONObject("uploader").getString("username");
-//                // caption may be null
-//                if (photoJSON.has("caption") && !photoJSON.isNull("caption")) {
-//                    photo.caption = photoJSON.getJSONObject("caption").getString("text");
-//                }
-//                photo.createdTime = photoJSON.getString("created_at");
-//                photo.imageUrl = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
-//                photo.imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
-//                photo.likesCount = photoJSON.getJSONObject("likes").getInt("count");
-//                // Get last 2 comments
-//                if (photoJSON.has("comments") && !photoJSON.isNull("comments")) {
-//                    photo.commentsCount = photoJSON.getJSONObject("comments").getInt("count");
-//                    commentsJSON = photoJSON.getJSONObject("comments").getJSONArray("data");
-//                    if (commentsJSON.length() > 0) {
-//                        photo.comment1 = commentsJSON.getJSONObject(commentsJSON.length() - 1).getString("text");
-//                        photo.user1 = commentsJSON.getJSONObject(commentsJSON.length() - 1).getJSONObject("from").getString("username");
-//                        if (commentsJSON.length() > 1) {
-//                            photo.comment2 = commentsJSON.getJSONObject(commentsJSON.length() - 2).getString("text");
-//                            photo.user2 = commentsJSON.getJSONObject(commentsJSON.length() - 2).getJSONObject("from").getString("username");
-//                        }
-//                    } else {
-//                        photo.commentsCount = 0;
-//                    }
-//                }
-//                photo.id = photoJSON.getString("id");
+//                User user = new User();
+//                user.profileUrl = photoJSON.getString("profileUrl")
+//                user.id = photoJSON.getString("id");
+//                user.username = photoJSON.getString("username);
 //                photos.add(photo);
 //                aPhotos.notifyDataSetChanged();
 //            }
 //        } catch (JSONException e) {
 //            e.printStackTrace();
 //        }
-        swipeContainer.setRefreshing(false);
     }
     String getToken(){
         return token;
