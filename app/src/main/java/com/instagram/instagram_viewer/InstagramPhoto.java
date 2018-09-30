@@ -18,6 +18,9 @@ public class InstagramPhoto {
     public int imageHeight;
     public int likesCount;
     public int commentsCount;
+    public double lat;
+    public double lng;
+    public double distance;
 
     public String getRelativeTime() {
         long ct = Long.parseLong(createdTime);
@@ -25,6 +28,9 @@ public class InstagramPhoto {
         long now = System.currentTimeMillis() / 1000;
         long elapsedSeconds = now - ct;
 
+        if(elapsedSeconds < 1){
+            return "just now";
+        }
         if (elapsedSeconds < 60) { // less than a minute
             return String.format("%.0fs", elapsedSeconds);
         } else if (elapsedSeconds < 3600) { // less than an hour
@@ -33,6 +39,13 @@ public class InstagramPhoto {
             return String.format("%.0fh", Math.floor(elapsedSeconds / 3600));
         } else {
             return String.format("%.0fd", Math.floor(elapsedSeconds / 86400));
+        }
+    }
+    public String getRelativeDistance(){
+        if (distance < 1000){
+            return String.format("%.0fm",distance);
+        }else{
+            return String.format("%.0fkm",distance/1000);
         }
     }
 }

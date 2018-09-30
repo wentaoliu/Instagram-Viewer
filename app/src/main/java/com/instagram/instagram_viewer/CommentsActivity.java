@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -63,15 +64,11 @@ public class CommentsActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        initView();
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_comments, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -169,20 +166,45 @@ public class CommentsActivity extends AppCompatActivity {
      * 发送评论
      */
     public void sendComment() {
-//        if(comment_content.getText().toString().equals("")){
-//            Toast.makeText(getApplicationContext(), "评论不能为空！", Toast.LENGTH_SHORT).show();
-//        }else{
-//            // 生成评论数据
-//            Comment comment = new Comment();
-//            comment.setName("评论者"+(data.size()+1)+"：");
-//            comment.setContent(comment_content.getText().toString());
-//            adapterComment.addComment(comment);
-//            // 发送完，清空输入框
-//            comment_content.setText("");
-//
-//            Toast.makeText(getApplicationContext(), "评论成功！", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+        if(comment_content.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(), "comment cannot be empty!", Toast.LENGTH_SHORT).show();
+        }else{
+            Comment comment = new Comment();
+            comment.setUsername("me");
+            comment.setContent(comment_content.getText().toString());
+            comment.setCreatedTime(System.currentTimeMillis() / 1000);
+            System.out.println(comment.createdTime);
+            aComments.addComment(comment);
+            comment_content.setText("");
+            String sendsUrl = "http://imitagram.wnt.io/media/" + id + "/comments";
+            //send(sendsUrl, token,comment_content.getText().toString());
+
+            Toast.makeText(getApplicationContext(), "comment successfully!", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+    OkHttpClient client1 = new OkHttpClient();
+
+    void send(String url, String token,String comment) {
+        try {
+            RequestBody formBody = new FormBody.Builder()
+                    .add("text", comment)
+                    .build();
+            post(url, formBody,token);
+
+        } catch (IOException e) {
+            return;
+        }
+    }
+   void post(String url, RequestBody body,String token) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization",token)
+                .post(body)
+                .build();
+        try (Response response = client1.newCall(request).execute()) {
+            return;
+        }
     }
 
 }

@@ -1,5 +1,7 @@
 package com.instagram.instagram_viewer;
 
+import android.support.v4.util.LongSparseArray;
+
 /**
  * Created by mvince on 1/26/15.
  */
@@ -13,7 +15,9 @@ public class Comment {
         long ct = Long.parseLong(createdTime);
         long now = System.currentTimeMillis() / 1000;
         long elapsedSeconds = now - ct;
-
+        if(elapsedSeconds < 1){
+            return "just now";
+        }
         if (elapsedSeconds < 60) { // less than a minute
             return String.format(elapsedSeconds == 1 ? "%.0f second ago" : "%.0f seconds ago", elapsedSeconds);
         } else if (elapsedSeconds < 3600) { // less than an hour
@@ -23,5 +27,15 @@ public class Comment {
         } else {
             return String.format(Math.floor(elapsedSeconds / 86400) == 1 ? "%.0f day ago" : "%.0f days ago", Math.floor(elapsedSeconds / 86400));
         }
+
+    }
+    public void setUsername(String username){
+        this.username = username;
+    }
+    public void setContent(String content){
+        this.text = content;
+    }
+    public void setCreatedTime(long time){
+        this.createdTime = Long.toString(time);
     }
 }

@@ -6,8 +6,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/comment_1_default_text"
-        android:id="@+id/tvComment"
+        android:text="@string/user_1_default_text"
+        android:id="@+id/tvUsername"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/imgCommentProfile"
         android:layout_toEndOf="@+id/imgCommentProfile"
@@ -15,16 +15,6 @@
         android:paddingRight="8dp"
         android:textColor="#aaaaaa"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/time_default_text"
-        android:id="@+id/tvCommentTime"
-        android:layout_below="@+id/tvComment"
-        android:layout_toRightOf="@+id/imgCommentProfile"
-        android:layout_toEndOf="@+id/imgCommentProfile"
-        android:paddingBottom="8dp"
-        android:textColor="#aaaaaa" />
 
     <ImageView
         android:id="@+id/imgCommentProfile"

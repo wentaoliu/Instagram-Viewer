@@ -28,6 +28,9 @@
     <string name="comment_content">Leave a comment</string>
     <string name="send">Send</string>
     <string name="hide_down">Hide</string>
+    <string name="user_1_default_text">user 1</string>
+    <string name="sort_by_time">Time</string>
+    <string name="sort_by_distance">Distance</string>
 
 </resources>
 
