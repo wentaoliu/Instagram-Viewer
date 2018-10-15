@@ -31,8 +31,8 @@
     <string name="send">Send</string>
     <string name="hide_down">Hide</string>
     <string name="user_1_default_text">user 1</string>
-    <string name="sort_by_time">Time</string>
-    <string name="sort_by_distance">Distance</string>
+    <string name="sort_by_time">LATEST</string>
+    <string name="sort_by_distance">CLOSET</string>
     <string name="follow">Follow</string>
     <string name="text_search">Find a friend</string>
     <string name="search">Search</string>

@@ -45,6 +45,13 @@
 
 
         </activity>
+        <activity
+            android:name="com.instagram.instagram_viewer.SuggestionActivity"
+            android:label="Suggestions"
+            >
+
+
+        </activity>
     </application>
 
 </manifest>

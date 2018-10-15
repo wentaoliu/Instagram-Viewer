@@ -2,6 +2,8 @@ package com.instagram.instagram_viewer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -16,6 +18,10 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.ParseException;
 import java.util.List;
 
 import okhttp3.FormBody;
@@ -67,7 +73,11 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> impleme
 
         // Populate the subviews (textfield, imageview) with the correct data
         tvUsername.setText(photo.username);
-        tvTime.setText(photo.getRelativeTime());
+        try {
+            tvTime.setText(photo.getRelativeTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         tvDistance.setText(photo.getRelativeDistance());
 
         if (photo.caption != null) {
@@ -90,7 +100,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> impleme
 
             }
         });
-        if (photo.likesCount > 0) {
+        if (photo.likesCount >= 0) {
             tvLikes.setText(String.format("%d likes", photo.likesCount));
             // set click handler for view all comments
             tvLikes.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +119,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> impleme
             tvLikes.setVisibility(View.GONE);
         }
 
-        if (photo.commentsCount > 0) {
+        if (photo.commentsCount >= 0) {
             tvViewAllComments.setText(String.format("view all %d comments", photo.commentsCount));
             // set click handler for view all comments
             tvViewAllComments.setOnClickListener(new View.OnClickListener() {
@@ -136,12 +146,44 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> impleme
         imgProfile.setImageResource(0);
         imgPhoto.setImageResource(0);
 
+        try {
+            Bitmap bitmap = getBitmap("http://imitagram.wnt.io"+ photo.imageUrl);
+            imgPhoto.setImageBitmap(bitmap);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try {
+            Bitmap bitmap = getBitmap("http://imitagram.wnt.io"+ photo.profileUrl);
+            imgProfile.setImageBitmap(bitmap);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         // Ask for the photo to be added to the imageview based on the photo url
         // Background: Send a network request to the url, download the image bytes, convert into bitmap, insert bitmap into the imageview
-        Picasso.with(getContext()).load(photo.profileUrl).into(imgProfile);
-        Picasso.with(getContext()).load(photo.imageUrl).placeholder(R.drawable.instagram_glyph_on_white).into(imgPhoto);
+        //Picasso.with(getContext()).load(photo.profileUrl).into(imgProfile);
+        //Picasso.with(getContext()).load(photo.imageUrl).placeholder(R.drawable.instagram_glyph_on_white).into(imgPhoto);
         // Return the view for that data item
         return convertView;
+    }
+    public Bitmap getBitmap(String path) throws IOException {
+        try {
+            URL url = new URL(path);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(5000);
+            conn.setRequestMethod("GET");
+            if (conn.getResponseCode() == 200) {
+                InputStream inputStream = conn.getInputStream();
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                return bitmap;
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

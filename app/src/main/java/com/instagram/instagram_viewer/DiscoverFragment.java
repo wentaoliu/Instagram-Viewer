@@ -1,5 +1,6 @@
 package com.instagram.instagram_viewer;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -21,6 +24,8 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class DiscoverFragment extends Fragment {
@@ -53,8 +58,10 @@ public class DiscoverFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        token = (String)getArguments().get("token");
         mView = inflater.inflate(R.layout.activity_discover, container, false);
         tvSearch = (TextView) mView.findViewById(R.id.text_search);
+        tv = (TextView) mView.findViewById(R.id.meet_friend);
         search = (Button) mView.findViewById(R.id.search);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,8 +74,17 @@ public class DiscoverFragment extends Fragment {
 
             }
         });
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SuggestionActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("token",token);
+                getContext().startActivity(intent);
+            }
+        });
+        tv.setVisibility(View.VISIBLE);
         lvUser = (ListView) mView.findViewById(R.id.lvDiscover);
-        token = (String)getArguments().get("token");
         return mView;
     }
 
@@ -124,16 +140,16 @@ public class DiscoverFragment extends Fragment {
 //        try (Response response = client.newCall(request).execute()) {
 //            stringTemp = response.body().string();
 //            jsonObjectTemp = new JSONObject(stringTemp);
-//            photos.clear();
+//            users.clear();
 //            photosJSON = (JSONArray) jsonObjectTemp.get("data");
 //            for (int i = 0; i < photosJSON.length(); i++) {
 //                JSONObject photoJSON = photosJSON.getJSONObject(i); // 1, 2, 3, 4
 //                User user = new User();
-//                user.profileUrl = photoJSON.getString("profileUrl")
-//                user.id = photoJSON.getString("id");
-//                user.username = photoJSON.getString("username);
-//                photos.add(photo);
-//                aPhotos.notifyDataSetChanged();
+//                user.profileUrl = photoJSON.getString("profileUrl");
+//                user.id = photoJSON.getInt("id");
+//                user.username = photoJSON.getString("username");
+//                users.add(user);
+//                aUsers.notifyDataSetChanged();
 //            }
 //        } catch (JSONException e) {
 //            e.printStackTrace();

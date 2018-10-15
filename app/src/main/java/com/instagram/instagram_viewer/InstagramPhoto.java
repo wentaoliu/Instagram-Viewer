@@ -1,5 +1,8 @@
 package com.instagram.instagram_viewer;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 /**
  * Created by mvince on 1/25/15.
  */
@@ -22,10 +25,11 @@ public class InstagramPhoto {
     public double lng;
     public double distance;
 
-    public String getRelativeTime() {
-        long ct = Long.parseLong(createdTime);
+    public String getRelativeTime() throws ParseException {
+        SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");//如2016-08-10 20:40
+        long ct = simpleFormat.parse(createdTime).getTime()/1000;
         //long ct = System.currentTimeMillis()-1000;
-        long now = System.currentTimeMillis() / 1000;
+        long now = System.currentTimeMillis()/1000;
         long elapsedSeconds = now - ct;
 
         if(elapsedSeconds < 1){
