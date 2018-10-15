@@ -1,5 +1,6 @@
 package com.instagram.instagram_viewer;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -18,10 +19,14 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private MenuItem menuItem;
     private String token;
+    private double longitude;
+    private double latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         token = getIntent().getStringExtra("token");
+        longitude = getIntent().getDoubleExtra("longitude",0);
+        latitude = getIntent().getDoubleExtra("latitude",0);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -53,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         List<Fragment> list = new ArrayList<>();
-        list.add(getInstance1(token));
+        list.add(getInstance1(token,latitude,longitude));
         list.add(getInstance2(token));
         //list.add(TestFragment.newInstance("UserFeed"));
         //list.add(TestFragment.newInstance("Discover"));
@@ -89,12 +94,13 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
-    public static UserFeedFragment getInstance1(String arg1){
+    public static UserFeedFragment getInstance1(String arg1,double longitude,double latitude){
 
         Bundle bundle = new Bundle();
 
         bundle.putString("token",arg1);
-
+        bundle.putDouble("longitude",longitude);
+        bundle.putDouble("latitude",latitude);
 
         UserFeedFragment fragment = new UserFeedFragment();
 

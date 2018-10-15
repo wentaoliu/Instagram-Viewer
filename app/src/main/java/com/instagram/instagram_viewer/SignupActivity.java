@@ -1,5 +1,6 @@
 package com.instagram.instagram_viewer;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -71,11 +72,11 @@ public class SignupActivity extends AppCompatActivity {
 
         mSignUpButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
-        progressDialog.show();
+//        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
+//                R.style.AppTheme_Dark_Dialog);
+//        progressDialog.setIndeterminate(true);
+//        progressDialog.setMessage("Creating Account...");
+//        progressDialog.show();
 
 
         String email = mEmailView.getText().toString();
@@ -86,16 +87,7 @@ public class SignupActivity extends AppCompatActivity {
         // TODO: Implement your own signup logic here.
         mRegisterTask = new UserRegisterTask(email, password1,password2);
         mRegisterTask.execute((Void) null);
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
+
     }
 
 
@@ -106,7 +98,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Register failed", Toast.LENGTH_LONG).show();
 
         mSignUpButton.setEnabled(true);
     }
@@ -178,6 +170,8 @@ public class SignupActivity extends AppCompatActivity {
                     intent.putExtra("token",token_final);
                     startActivity(intent);
                     overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                }else{
+                    return false;
                 }
                 System.out.println(response);
             } catch (IOException e) {
@@ -186,6 +180,16 @@ public class SignupActivity extends AppCompatActivity {
 
             // TODO: register the new account here.
             return true;
+        }
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mRegisterTask = null;
+
+            if (success) {
+                finish();
+            } else {
+                onSignupFailed();
+            }
         }
 
     }

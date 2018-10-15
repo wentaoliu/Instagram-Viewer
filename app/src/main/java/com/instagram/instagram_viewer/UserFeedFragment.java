@@ -1,12 +1,24 @@
 package com.instagram.instagram_viewer;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+
+import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -36,6 +49,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 
 public class UserFeedFragment extends Fragment {
 
@@ -51,6 +66,8 @@ public class UserFeedFragment extends Fragment {
     private InstagramPhotosAdapter aPhotos;
     private InstagramPhotosAdapter bPhotos;
     private  String token;
+    private double latitude;
+    private double longitude;
 
     String stringTemp;
     JSONObject jsonObjectTemp = new JSONObject();
@@ -88,6 +105,8 @@ public class UserFeedFragment extends Fragment {
         });
         lvPhotos = (ListView) mView.findViewById(R.id.lvPhotos);
         token = (String)getArguments().get("token");
+        latitude = (double)getArguments().get("latitude");
+        longitude = (double)getArguments().get("longitude");
         try {
             initRefreshLayout();
         } catch (IOException e) {
@@ -164,7 +183,9 @@ public class UserFeedFragment extends Fragment {
         photo.id = "1";
         photo.lat = 121.62;
         photo.lng = 38.92;
-        photo.distance = 1000;
+       // photo.distance = 5000;
+
+        photo.distance = getDistance(photo.lat,photo.lng);
         System.out.println(photo.distance);
         photos.add(photo);
         aPhotos.notifyDataSetChanged();
@@ -179,7 +200,9 @@ public class UserFeedFragment extends Fragment {
         photo1.id = "1";
         photo1.lat = 121.62;
         photo1.lng = 38.92;
-        photo1.distance = 5000;
+        //photo1.distance = 1000;
+
+        photo1.distance = getDistance(photo1.lat,photo1.lng);
         System.out.println(photo.distance);
         photos.add(photo1);
         aPhotos.notifyDataSetChanged();
@@ -234,16 +257,17 @@ public class UserFeedFragment extends Fragment {
     String getToken(){
         return token;
     }
-    public double getDistance(double latitude, double longitude) {
-        double lng_dest = (Math.PI / 180) * longitude;
-        double lat_dest = (Math.PI / 180) * latitude;
-        Location location = new LocationUtils( this ).showLocation();
-        double lng_cur = (Math.PI / 180) *  location.getLongitude();
-        double lat_cur = (Math.PI / 180) * location.getLatitude();
+    public double getDistance(double latitude1, double longitude1) {
+        double lng_dest = (Math.PI / 180) * longitude1;
+        double lat_dest = (Math.PI / 180) * latitude1;
+
+
+        double lng_cur = (Math.PI / 180) *  longitude;
+        double lat_cur = (Math.PI / 180) * latitude;
 
         double R = 6371;
 
-        double d = Math.acos(Math.sin(lat_cur) * Math.sin(lat_dest) + Math.cos(lat_cur) * Math.cos(lat_dest) * Math.cos(lng_dest - lng_dest))* R;
+        double d = Math.acos(Math.sin(lat_cur) * Math.sin(lat_dest) + Math.cos(lat_cur) * Math.cos(lat_dest) * Math.cos(lng_dest - lng_cur))* R;
         return d;
     }
     class SortByTime implements Comparator {
@@ -264,4 +288,5 @@ public class UserFeedFragment extends Fragment {
             return -1;
         }
     }
+
 }

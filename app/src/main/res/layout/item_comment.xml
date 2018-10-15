@@ -36,16 +36,5 @@
         android:scaleType="fitCenter"
         android:src="@drawable/ic_launcher" />
 
-    <Button
-        android:id="@+id/follow"
-        android:layout_width="50dp"
-        android:layout_height="35dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:background="@color/mainColor"
-        android:text="@string/follow"
-
-        android:textColor="@color/white"
-        android:textSize="13sp" />
 
 </RelativeLayout>

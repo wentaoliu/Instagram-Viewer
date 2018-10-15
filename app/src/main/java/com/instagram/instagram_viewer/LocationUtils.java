@@ -2,67 +2,217 @@ package com.instagram.instagram_viewer;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.widget.Toast;
 
 
 import java.util.List;
 
 public class LocationUtils {
 
-    private LocationManager locationManager;
+    private LocationManager lm;
+
+    LocationListener locationListener;
+
     private String locationProvider;
     private Location location;
     private Context mContext;
 
     LocationUtils(UserFeedFragment context) {
         mContext = context.getActivity();
-
-        getLocation();
+        checkGPSSettings();
     }
+    public static boolean checkPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public void startLocalisation() {
+
+        // parameters of location service
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setCostAllowed(true);
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+
+        // localisation uses a lot of power, consider your task cycle
+
+        //String provider = lm.getBestProvider(criteria, true);
+
+        // can also use a specific provider
+
+        // cellular or WIFI network can localise me
+        String providerNET = LocationManager.NETWORK_PROVIDER;
+
+        // gps signal often naive
+        String providerGPS = LocationManager.GPS_PROVIDER;
 
 
-    private void getLocation() {
-        //1.获取位置管理器
-        locationManager = (LocationManager) mContext.getSystemService( Context.LOCATION_SERVICE );
+        // must call this before using getLastKnownLocation
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
+            return;
+        }
 
-        //2.获取位置提供器，GPS或是NetWork
-        List<String> providers = locationManager.getProviders( true );
-        System.out.println(providers);
-        if (providers.contains( LocationManager.NETWORK_PROVIDER )) {
-            //如果是网络定位
-            locationProvider = LocationManager.NETWORK_PROVIDER;
 
-        } else if (providers.contains( LocationManager.GPS_PROVIDER )) {
-            //如果是GPS定位
-            locationProvider = LocationManager.GPS_PROVIDER;
+
+        boolean gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        Location net_loc = null, gps_loc = null, finalLoc = null;
+
+        if (gps_enabled) {
+            Log.d("haha", " gps_enabled");
+
+            //requestLocationUpdates(String provider, long minTime, float minDistance, LocationListener listener)
+
+            lm.requestLocationUpdates(providerGPS, 0, 0, locationListener);
+            gps_loc = lm.getLastKnownLocation(providerGPS);
+        }
+        if (network_enabled){
+            Log.d("haha", " net_enabled");
+            lm.requestLocationUpdates(providerNET, 0, 0, locationListener);
+            net_loc = lm.getLastKnownLocation(providerNET);
+        }
+
+        if (gps_loc != null && net_loc != null) {
+
+            Log.d("haha", "both available location");
+
+            //smaller the number more accurate result will
+            if (gps_loc.getAccuracy() > net_loc.getAccuracy())
+                finalLoc = net_loc;
+            else
+                finalLoc = gps_loc;
+
+            // I used this just to get an idea (if both avail, its upto you which you want to take as I've taken location with more accuracy)
+
         } else {
-            return;
+
+            if (gps_loc != null) {
+                finalLoc = gps_loc;
+                Log.d("haha", "gps available location");
+            } else if (net_loc != null) {
+                finalLoc = net_loc;
+                Log.d("haha", "net available location");
+            }
+        }
+//        if (gps_loc != null) {
+//                finalLoc = gps_loc;}
+
+        if (finalLoc != null) {
+            setLocation( finalLoc );
+            double latitude = finalLoc.getLatitude();
+
+            double longitude = finalLoc.getLongitude();
+
+            Log.d("haha", "latitude：" + latitude + "\nlongitude" + longitude);
+
+            // if we are in melbourne, we get negative latitude.
+            // it means south part of the earth.
+
+        } else {
+            Log.d("haha", "no available location");
+
+
+            //startLocalisation();
         }
 
-        // 需要检查权限,否则编译报错,想抽取成方法都不行,还是会报错。只能这样重复 code 了。
-        if (Build.VERSION.SDK_INT >= 23 &&
-                ActivityCompat.checkSelfPermission( mContext, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission( mContext, Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        if (ActivityCompat.checkSelfPermission( mContext, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( mContext, Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        //3.获取上次的位置，一般第一次运行，此值为null
 
-        Location location = locationManager.getLastKnownLocation( locationProvider );
-        if (location != null) {
-            setLocation( location );
-        }
-        // 监视地理位置变化，第二个和第三个参数分别为更新的最短时间minTime和最短距离minDistace
-        locationManager.requestLocationUpdates( locationProvider, 0, 0, locationListener );
     }
+
+    public void checkGPSSettings() {
+        lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+
+        locationListener = new LocationListener()
+        {
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onLocationChanged(Location location) {
+                double longitude = location.getLongitude();
+                double latitude = location.getLatitude();
+                //location.getProvider();
+                Log.d("haha", "" + location.getProvider() + " Location latitude " + latitude + "\nlongitude:" + longitude);
+            }
+        };
+
+
+
+
+        boolean GPSEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        String[] permissionsArray = {
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+        };
+
+        if (GPSEnabled) {
+            // Android 6.0+
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (!checkPermissions(mContext, permissionsArray)) {
+                    // request code 1
+
+                    Log.d("haha", "request");
+
+                } else {
+                    // Permission has already been granted
+                    Log.d("haha", "line 52");
+                    startLocalisation();
+                }
+
+
+            } else {
+                // no runtime check
+                Log.d("haha", "line 74");
+                startLocalisation();
+            }
+        } else {
+            Log.d("haha", "line 82");
+            Toast.makeText(mContext, "GPS Not Enabled", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            // request code 2
+        }
+    }
+
 
     private void setLocation(Location location) {
         this.location = location;
@@ -75,58 +225,5 @@ public class LocationUtils {
         return location;
     }
 
-    // 移除定位监听
-    public void removeLocationUpdatesListener() {
-        // 需要检查权限,否则编译不过
-        if (Build.VERSION.SDK_INT >= 23 &&
-                ActivityCompat.checkSelfPermission( mContext, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission( mContext, Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        if (locationManager != null) {
-            locationManager.removeUpdates( locationListener );
-        }
-    }
-
-    /**
-     * LocationListern监听器
-     * 参数：地理位置提供器、监听位置变化的时间间隔、位置变化的距离间隔、LocationListener监听器
-     */
-
-    LocationListener locationListener = new LocationListener() {
-
-        /**
-         * 当某个位置提供者的状态发生改变时
-         */
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle arg2) {
-
-        }
-
-        /**
-         * 某个设备打开时
-         */
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        /**
-         * 某个设备关闭时
-         */
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-
-        /**
-         * 手机位置发生变动
-         */
-        @Override
-        public void onLocationChanged(Location location) {
-            location.getAccuracy();//精确度
-            setLocation( location );
-        }
-    };
 
 }
