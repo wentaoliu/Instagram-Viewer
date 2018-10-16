@@ -1,6 +1,8 @@
 package com.instagram.instagram_viewer;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -40,6 +43,7 @@ public class LikesActivity extends AppCompatActivity {
     JSONObject jsonObjectTemp = new JSONObject();
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         id = getIntent().getStringExtra("id");
         token = getIntent().getStringExtra("token");
@@ -95,31 +99,30 @@ public class LikesActivity extends AppCompatActivity {
                 .addHeader("Authorization", token)
                 .build();
         JSONArray likesJSON = null;
-        Like like = new Like();
-        like.profileUrl = " http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
-        like.username = "huo";
-        likes.add(like);
-        aLikes.notifyDataSetChanged();
-//        try (Response response = client.newCall(request).execute()) {
-//            stringTemp = response.body().string();
-//            jsonObjectTemp = new JSONObject(stringTemp);
-//            likes.clear();
-//            likesJSON = (JSONArray) jsonObjectTemp.get("data");
-//            // put newest at the top
-//            for (int i = likesJSON.length() - 1; i >= 0; i--) {
-//                JSONObject likeJSON = likesJSON.getJSONObject(i);
-//                Like like = new Like();
-//                like.profileUrl = commentJSON.getJSONObject("from").getString("profile_picture");
-//                like.username = commentJSON.getJSONObject("from").getString("username");
-//                likes.add(like);
-//            }
-//            // Notified the adapter that it should populate new changes into the listview
-//            aComments.notifyDataSetChanged();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+//        Like like = new Like();
+//        like.profileUrl = " http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
+//        like.username = "huo";
+//        likes.add(like);
+//        aLikes.notifyDataSetChanged();
+        try (Response response = client.newCall(request).execute()) {
+            stringTemp = response.body().string();
+            likes.clear();
+            likesJSON = new JSONArray(stringTemp);
+            // put newest at the top
+            for (int i = likesJSON.length() - 1; i >= 0; i--) {
+                JSONObject likeJSON = likesJSON.getJSONObject(i);
+                Like like = new Like();
+                like.profileUrl = likeJSON.getString("profile_picture");
+                like.username = likeJSON.getString("username");
+                likes.add(like);
+            }
+            // Notified the adapter that it should populate new changes into the listview
+            aLikes.notifyDataSetChanged();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

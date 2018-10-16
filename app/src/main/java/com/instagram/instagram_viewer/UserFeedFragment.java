@@ -59,7 +59,6 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 public class UserFeedFragment extends Fragment {
 
     TextView fragmentText;
-
     private TextView tv;
     public View mView;
     private View view;
@@ -71,6 +70,7 @@ public class UserFeedFragment extends Fragment {
     private InstagramPhotosAdapter aPhotos;
     private InstagramPhotosAdapter bPhotos;
     private  String token;
+    private Location location;
     private double latitude;
     private double longitude;
 
@@ -78,7 +78,7 @@ public class UserFeedFragment extends Fragment {
     JSONObject jsonObjectTemp = new JSONObject();
 
 
-    public static UserFeedFragment newInstance(String name) {
+    public static UserFeedFragment newInstance(LoginActivity activity,String name) {
 
         Bundle args = new Bundle();
         args.putString("name", name);
@@ -113,8 +113,14 @@ public class UserFeedFragment extends Fragment {
         });
         lvPhotos = (ListView) mView.findViewById(R.id.lvPhotos);
         token = (String)getArguments().get("token");
-        latitude = (double)getArguments().get("latitude");
-        longitude = (double)getArguments().get("longitude");
+        location = LoginActivity.getLocation();
+        if(location != null) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }else{
+            latitude = 0;
+            longitude = 0;
+        }
         try {
             initRefreshLayout();
         } catch (IOException e) {
@@ -185,7 +191,6 @@ public class UserFeedFragment extends Fragment {
                 .addHeader("Authorization",token)
                 .build();
         JSONArray photosJSON = null;
-        JSONArray commentsJSON = null;
         try (Response response = client.newCall(request).execute()) {
             stringTemp = response.body().string();
             photos.clear();

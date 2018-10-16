@@ -83,10 +83,12 @@ public class UserAdapter1 extends BaseAdapter {
 
         // Reset the images from the recycled view
         imgProfile.setImageResource(0);
-
+        String url = "http://imitagram.wnt.io" + user.profileUrl;
         // Ask for the photo to be added to the imageview based on the photo url
         // Background: Send a network request to the url, download the image bytes, convert into bitmap, insert bitmap into the imageview
-        Picasso.with(context).load(user.profileUrl).into(imgProfile);
+        // Ask for the photo to be added to the imageview based on the photo url
+        // Background: Send a network request to the url, download the image bytes, convert into bitmap, insert bitmap into the imageview
+        new LikesAdapter.DownloadImageTask(imgProfile).execute(url);
 
         // Return the view for that data item
         return convertView;

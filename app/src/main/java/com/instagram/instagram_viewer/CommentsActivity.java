@@ -110,35 +110,35 @@ public class CommentsActivity extends AppCompatActivity {
                 .addHeader("Authorization", token)
                 .build();
         JSONArray commentsJSON = null;
-        Comment comment = new Comment();
-        comment.profileUrl = " http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
-        comment.username = "huo";
-        comment.text = "helloWorld!helloWorld!helloWorld!helloWorld!helloWorld!helloWorld!helloWorld!";
-        comment.createdTime = "1279340983";
-        comments.add(comment);
-        aComments.notifyDataSetChanged();
-//        try (Response response = client.newCall(request).execute()) {
-//            stringTemp = response.body().string();
-//            jsonObjectTemp = new JSONObject(stringTemp);
-//            comments.clear();
-//            commentsJSON = (JSONArray) jsonObjectTemp.get("data");
-//            // put newest at the top
-//            for (int i = commentsJSON.length() - 1; i >= 0; i--) {
-//                JSONObject commentJSON = commentsJSON.getJSONObject(i);
-//                Comment comment = new Comment();
-//                comment.profileUrl = commentJSON.getJSONObject("from").getString("profile_picture");
-//                comment.username = commentJSON.getJSONObject("from").getString("username");
-//                comment.text = commentJSON.getString("text");
-//                comment.createdTime = commentJSON.getString("created_time");
-//                comments.add(comment);
-//            }
-//            // Notified the adapter that it should populate new changes into the listview
-//            aComments.notifyDataSetChanged();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+//        Comment comment = new Comment();
+//        comment.profileUrl = " http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
+//        comment.username = "huo";
+//        comment.text = "helloWorld!helloWorld!helloWorld!helloWorld!helloWorld!helloWorld!helloWorld!";
+//        comment.createdTime = "1279340983";
+//        comments.add(comment);
+//        aComments.notifyDataSetChanged();
+        try (Response response = client.newCall(request).execute()) {
+            stringTemp = response.body().string();
+            comments.clear();
+            commentsJSON = new JSONArray(stringTemp);
+            // put newest at the top
+            for (int i = commentsJSON.length() - 1; i >= 0; i--) {
+                JSONObject commentJSON = commentsJSON.getJSONObject(i);
+                Comment comment = new Comment();
+                comment.profileUrl = commentJSON.getJSONObject("user").getString("profile_picture");
+                comment.username = commentJSON.getJSONObject("user").getString("username");
+                comment.text = commentJSON.getString("text");
+                comment.userId = commentJSON.getJSONObject("user").getInt("id");
+                comment.createdTime = commentJSON.getString("created_time");
+                comments.add(comment);
+            }
+            // Notified the adapter that it should populate new changes into the listview
+            aComments.notifyDataSetChanged();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initView() {
@@ -175,9 +175,8 @@ public class CommentsActivity extends AppCompatActivity {
             comment.setCreatedTime(System.currentTimeMillis() / 1000);
             System.out.println(comment.createdTime);
             aComments.addComment(comment);
-            comment_content.setText("");
             String sendsUrl = "http://imitagram.wnt.io/media/" + id + "/comments";
-            //send(sendsUrl, token,comment_content.getText().toString());
+            send(sendsUrl, token,comment_content.getText().toString());
 
             Toast.makeText(getApplicationContext(), "comment successfully!", Toast.LENGTH_SHORT).show();
 

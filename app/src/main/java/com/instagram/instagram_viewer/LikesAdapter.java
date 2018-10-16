@@ -1,6 +1,10 @@
 package com.instagram.instagram_viewer;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +15,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -62,10 +70,10 @@ public class LikesAdapter extends BaseAdapter {
 
         // Reset the images from the recycled view
         imgProfile.setImageResource(0);
-
+        String url = "http://imitagram.wnt.io"+ like.profileUrl;
         // Ask for the photo to be added to the imageview based on the photo url
         // Background: Send a network request to the url, download the image bytes, convert into bitmap, insert bitmap into the imageview
-        Picasso.with(context).load(like.profileUrl).into(imgProfile);
+        new DownloadImageTask(imgProfile).execute(url) ;
 
         // Return the view for that data item
         return convertView;
@@ -76,6 +84,40 @@ public class LikesAdapter extends BaseAdapter {
         // disables selection
         return false;
     }
+    public static Bitmap getBitmap(String path) throws IOException {
+        try {
+            URL url = new URL(path);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(5000);
+            conn.setRequestMethod("GET");
+            if (conn.getResponseCode() == 200) {
+                InputStream inputStream = conn.getInputStream();
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                return bitmap;
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap>
+    {
+        ImageView i;
+        public DownloadImageTask(ImageView i){
+            this.i = i;
+        }
+        protected Bitmap doInBackground(String... urls) {
+            try {
+                return getBitmap(urls[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
 
-
+        protected void onPostExecute(Bitmap result) {
+            i.setImageBitmap(result);
+        }
+    }
 }

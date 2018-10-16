@@ -94,14 +94,14 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> impleme
                 like.setImageResource(R.drawable.like_focus);
                 InstagramPhoto ip = getItem(position);
                 String sendsUrl = "http://imitagram.wnt.io/media/" + ip.id + "/likes";
-                //send(sendsUrl, fragment.getToken());
+                send(sendsUrl, fragment.getToken());
+
                 AnimationTools.scale(tvLikes);
-                tvLikes.setText(String.format("%d likes",photo.likesCount+1));
 
             }
         });
         if (photo.likesCount >= 0) {
-            tvLikes.setText(String.format("%d likes", photo.likesCount));
+            tvLikes.setText("view all likes");
             // set click handler for view all comments
             tvLikes.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -111,6 +111,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> impleme
                     InstagramPhoto ip = getItem(position);
                     intent.putExtra("id", ip.id);
                     intent.putExtra("token",fragment.getToken());
+                    tvLikes.setEnabled(true);
                     getContext().startActivity(intent);
                 }
             });
@@ -120,7 +121,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> impleme
         }
 
         if (photo.commentsCount >= 0) {
-            tvViewAllComments.setText(String.format("view all %d comments", photo.commentsCount));
+            tvViewAllComments.setText("view all comments");
             // set click handler for view all comments
             tvViewAllComments.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -145,21 +146,11 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> impleme
         // Reset the images from the recycled view
         imgProfile.setImageResource(0);
         imgPhoto.setImageResource(0);
+        String imgUrl = "http://imitagram.wnt.io"+ photo.imageUrl;
+        String profileUrl = "http://imitagram.wnt.io"+ photo.profileUrl;
+        new LikesAdapter.DownloadImageTask(imgPhoto).execute(imgUrl);
+        new LikesAdapter.DownloadImageTask(imgProfile).execute(profileUrl);
 
-        try {
-            Bitmap bitmap = getBitmap("http://imitagram.wnt.io"+ photo.imageUrl);
-            imgPhoto.setImageBitmap(bitmap);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        try {
-            Bitmap bitmap = getBitmap("http://imitagram.wnt.io"+ photo.profileUrl);
-            imgProfile.setImageBitmap(bitmap);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 
         // Ask for the photo to be added to the imageview based on the photo url
         // Background: Send a network request to the url, download the image bytes, convert into bitmap, insert bitmap into the imageview
@@ -167,23 +158,6 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> impleme
         //Picasso.with(getContext()).load(photo.imageUrl).placeholder(R.drawable.instagram_glyph_on_white).into(imgPhoto);
         // Return the view for that data item
         return convertView;
-    }
-    public Bitmap getBitmap(String path) throws IOException {
-        try {
-            URL url = new URL(path);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setRequestMethod("GET");
-            if (conn.getResponseCode() == 200) {
-                InputStream inputStream = conn.getInputStream();
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                return bitmap;
-            }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
     }
 
     @Override

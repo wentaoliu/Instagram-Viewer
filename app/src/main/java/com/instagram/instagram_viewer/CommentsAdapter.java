@@ -1,6 +1,9 @@
 package com.instagram.instagram_viewer;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.text.Html;
@@ -14,6 +17,11 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -63,14 +71,21 @@ public class CommentsAdapter extends BaseAdapter {
         TextView tvCommentTime = (TextView) convertView.findViewById(R.id.tvCommentTime);
 
         tvComment.setText(Html.fromHtml("<font color='#3f729b'><b>" + comment.username + "</b></font> " + comment.text));
-        tvCommentTime.setText(comment.getRelativeTime());
+        try {
+            tvCommentTime.setText(comment.getRelativeTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         // Reset the images from the recycled view
         imgProfile.setImageResource(0);
 
         // Ask for the photo to be added to the imageview based on the photo url
         // Background: Send a network request to the url, download the image bytes, convert into bitmap, insert bitmap into the imageview
-        Picasso.with(context).load(comment.profileUrl).into(imgProfile);
+        String url = "http://imitagram.wnt.io" + comment.profileUrl;
+        // Ask for the photo to be added to the imageview based on the photo url
+        // Background: Send a network request to the url, download the image bytes, convert into bitmap, insert bitmap into the imageview
+        new LikesAdapter.DownloadImageTask(imgProfile).execute(url);
 
         // Return the view for that data item
         return convertView;
@@ -85,5 +100,8 @@ public class CommentsAdapter extends BaseAdapter {
         comments.add(comment);
         notifyDataSetChanged();
     }
+
+
+
 
 }

@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     private TextView mRegisterView;
     private LocationManager lm;
-    private Location location;
+    public static Location location;
 
     LocationListener locationListener;
 
@@ -356,8 +356,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                     intent.putExtra("token",token_final);
 
-                    intent.putExtra("latitude",location.getLatitude());
-                    intent.putExtra("longitude",location.getLongitude());
                     startActivity(intent);
                     overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }else{
@@ -456,7 +454,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (gps_enabled) {
             Log.d("haha", " gps_enabled");
 
-            //requestLocationUpdates(String provider, long minTime, float minDistance, LocationListener listener)
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 20000, 1, locationListener);
 
             lm.requestLocationUpdates(providerGPS, 0, 0, locationListener);
             gps_loc = lm.getLastKnownLocation(providerGPS);
@@ -625,6 +623,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // other 'case' lines to check for other
             // permissions this app might request.
         }
+    }
+
+    public static Location getLocation(){
+        return location;
     }
 }
 

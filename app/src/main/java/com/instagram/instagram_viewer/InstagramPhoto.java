@@ -32,11 +32,9 @@ public class InstagramPhoto {
         long now = System.currentTimeMillis()/1000;
         long elapsedSeconds = now - ct;
 
-        if(elapsedSeconds < 1){
-            return "just now";
-        }
+
         if (elapsedSeconds < 60) { // less than a minute
-            return String.format("%.0fs", elapsedSeconds);
+            return "just now";
         } else if (elapsedSeconds < 3600) { // less than an hour
             return String.format("%.0fm", Math.floor(elapsedSeconds / 60));
         } else if (elapsedSeconds < 86400) { // less than a day

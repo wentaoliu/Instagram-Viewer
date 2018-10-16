@@ -124,36 +124,34 @@ public class DiscoverFragment extends Fragment {
     OkHttpClient client = new OkHttpClient();
 
     void get(String url,String token) throws IOException {
-        User user = new User();
-        user.profileUrl = "http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
-        user.username = "kevin";
-        user.id = 1;
-        users.add(user);
-        aUsers.notifyDataSetChanged();
+//        User user = new User();
+//        user.profileUrl = "http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
+//        user.username = "kevin";
+//        user.id = 1;
+//        users.add(user);
+//        aUsers.notifyDataSetChanged();
 
-//        Request request = new Request.Builder()
-//                .url(url)
-//                .addHeader("Authorization",token)
-//                .build();
-//        JSONArray photosJSON = null;
-//        JSONArray commentsJSON = null;
-//        try (Response response = client.newCall(request).execute()) {
-//            stringTemp = response.body().string();
-//            jsonObjectTemp = new JSONObject(stringTemp);
-//            users.clear();
-//            photosJSON = (JSONArray) jsonObjectTemp.get("data");
-//            for (int i = 0; i < photosJSON.length(); i++) {
-//                JSONObject photoJSON = photosJSON.getJSONObject(i); // 1, 2, 3, 4
-//                User user = new User();
-//                user.profileUrl = photoJSON.getString("profileUrl");
-//                user.id = photoJSON.getInt("id");
-//                user.username = photoJSON.getString("username");
-//                users.add(user);
-//                aUsers.notifyDataSetChanged();
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization",token)
+                .build();
+        JSONArray photosJSON = null;
+        try (Response response = client.newCall(request).execute()) {
+            stringTemp = response.body().string();
+            users.clear();
+            photosJSON = new JSONArray(stringTemp);
+            for (int i = 0; i < photosJSON.length(); i++) {
+                JSONObject photoJSON = photosJSON.getJSONObject(i); // 1, 2, 3, 4
+                User user = new User();
+                user.profileUrl = photoJSON.getString("profile_picture");
+                user.id = photoJSON.getInt("id");
+                user.username = photoJSON.getString("username");
+                users.add(user);
+                aUsers.notifyDataSetChanged();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     String getToken(){
         return token;

@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -74,6 +75,8 @@ public class UserAdapter extends BaseAdapter {
                         .build();
                 try {
                     post("http://imitagram.wnt.io/relationships/follow", formBody);
+                    Toast.makeText(context.getActivity(), "follow successfully!", Toast.LENGTH_SHORT).show();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -83,11 +86,10 @@ public class UserAdapter extends BaseAdapter {
 
         // Reset the images from the recycled view
         imgProfile.setImageResource(0);
-
+        String url = "http://imitagram.wnt.io" + user.profileUrl;
         // Ask for the photo to be added to the imageview based on the photo url
         // Background: Send a network request to the url, download the image bytes, convert into bitmap, insert bitmap into the imageview
-        Picasso.with(context.getActivity()).load(user.profileUrl).into(imgProfile);
-
+        new LikesAdapter.DownloadImageTask(imgProfile).execute(url);
         // Return the view for that data item
         return convertView;
     }
