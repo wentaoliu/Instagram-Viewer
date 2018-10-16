@@ -1,20 +1,13 @@
 package com.instagram.instagram_viewer;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TableLayout;
-import android.widget.TextView;
 import android.support.design.widget.TabLayout;
 
 /**
@@ -141,9 +134,9 @@ public class ActivityFeedFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return FollowingActivityFeedFragment.newInstance(position);
+                    return ActivityFeedListFragment.newInstance("following");
                 case 1:
-                    return SelfActivityFeedFragment.newInstance(position);
+                    return ActivityFeedListFragment.newInstance("self");
                 default:
                     return null;
             }
