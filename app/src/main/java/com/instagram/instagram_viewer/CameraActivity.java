@@ -1,4 +1,4 @@
-package comshaoqingliu.httpsgithub.Instagram;
+package com.instagram.instagram_viewer;
 
 import android.Manifest;
 import android.app.Activity;
@@ -27,7 +27,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import Helper.BitmapStore;
-import comshaoqingliu.httpsgithub.helloworld.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;

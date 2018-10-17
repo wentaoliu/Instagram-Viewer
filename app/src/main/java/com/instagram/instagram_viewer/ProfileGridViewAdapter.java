@@ -1,4 +1,4 @@
-package comshaoqingliu.httpsgithub.Instagram;
+package com.instagram.instagram_viewer;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-
-import comshaoqingliu.httpsgithub.helloworld.R;
 
 public class ProfileGridViewAdapter extends ArrayAdapter {
 

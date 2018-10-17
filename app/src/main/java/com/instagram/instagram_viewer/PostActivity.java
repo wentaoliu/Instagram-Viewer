@@ -1,4 +1,4 @@
-package comshaoqingliu.httpsgithub.Instagram;
+package com.instagram.instagram_viewer;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import Helper.BitmapStore;
-import comshaoqingliu.httpsgithub.helloworld.R;
 
 public class PostActivity extends AppCompatActivity {
 

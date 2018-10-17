@@ -1,4 +1,4 @@
-package comshaoqingliu.httpsgithub.Instagram;
+package com.instagram.instagram_viewer;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.Button;
 
 import Helper.BitmapStore;
-import comshaoqingliu.httpsgithub.helloworld.R;
-
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 /* This activity deals with the crop image function */

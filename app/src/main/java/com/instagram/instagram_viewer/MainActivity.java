@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         //list.add(TestFragment.newInstance("Discover"));
         list.add(TestFragment.newInstance("UploadPhoto"));
         list.add(ActivityFeedFragment.newInstance());
-        list.add(TestFragment.newInstance("Profile"));
+        list.add(ProfileFragment.newInstance());
         viewPagerAdapter.setList(list);
 
     }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="comshaoqingliu.httpsgithub.Instagram.CropActivity">
+    tools:context=".CropActivity">
 
     <!--<Helper.CropView-->
         <!--android:id="@+id/crop_view"-->
@@ -36,8 +36,8 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Return"
-            android:textColor="@color/colorGreen"
-            android:background="@color/colorWhite"
+            android:textColor="@color/base"
+            android:background="@color/white"
             />
 
         <Button
@@ -46,8 +46,8 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="OK"
-            android:background="@color/colorGreen"
-            android:textColor="@color/colorWhite"
+            android:background="@color/base"
+            android:textColor="@color/white"
              />
 
     </LinearLayout>

@@ -1,7 +1,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="comshaoqingliu.httpsgithub.Instagram.ProfileActivity">
+    tools:context=".ProfileFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,15 +26,6 @@
                 android:textStyle="bold"
                 android:gravity="center"
                 />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
-                android:layout_centerVertical="true"
-                android:id="@+id/profileMenu"
-                android:src="@drawable/profile_menu"/>
 
             <!--<include layout="@layout/snippet_top_prolfilebar"/>-->
 
@@ -70,10 +61,10 @@
                         android:layout_height="80dp"
                         android:src="@drawable/profile"
                         android:scaleType="centerCrop"
-                        android:layout_centerVertical="true"
-                        app:civ_border_color="#000"
-                        app:civ_border_width="2dp"
-                        />
+                        android:layout_centerVertical="true"/>
+                        <!--app:civ_border_color="#000"-->
+                        <!--app:civ_border_width="2dp"-->
+                        <!--/>-->
 
 
                 </RelativeLayout>
@@ -92,51 +83,12 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/linLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/linLayout"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:id="@+id/display_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="***"
-                    android:textColor="#000"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="I live in Melbourne"
-                    android:textColor="#000"
-                    android:textSize="16sp"/>
-
-                <TextView
-                    android:id="@+id/website"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="https://***.com"
-                    android:textColor="#005ce6"
-                    android:textSize="16sp"
-                    />
-
-
-            </LinearLayout>
-
             <!--************************* GridView of images *************************-->
             <RelativeLayout
                 android:id="@+id/relLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linLayout2"
+                android:layout_below="@+id/linLayout"
                 android:layout_marginBottom="50dp">
 
                 <GridView

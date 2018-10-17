@@ -1,4 +1,4 @@
-package comshaoqingliu.httpsgithub.Instagram;
+package com.instagram.instagram_viewer;
 
 public class UserProfile {
 

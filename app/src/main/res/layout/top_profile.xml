@@ -2,9 +2,9 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="comshaoqingliu.httpsgithub.Instagram.ProfileActivity">
+    tools:context=".ProfileFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp">
@@ -17,9 +17,9 @@
             android:layout_marginStart="8dp"
             android:text="199"
             android:textColor="@android:color/background_dark"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="18sp"/>
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/textPost"
@@ -28,9 +28,9 @@
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:text="Posts"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvPost" />
+            android:textSize="12sp"/>
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/tvPost" />-->
 
         <TextView
             android:id="@+id/tvFollower"
@@ -42,11 +42,11 @@
             android:layout_marginStart="8dp"
             android:text="88"
             android:textColor="@android:color/background_dark"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/tvFollowing"
-            app:layout_constraintHorizontal_bias="0.48"
-            app:layout_constraintStart_toEndOf="@+id/tvPost"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="18sp"/>
+            <!--app:layout_constraintEnd_toStartOf="@+id/tvFollowing"-->
+            <!--app:layout_constraintHorizontal_bias="0.48"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/tvPost"-->
+            <!--app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/textFollower"
@@ -57,11 +57,11 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:text="Followers"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/textFollowing"
-            app:layout_constraintHorizontal_bias="0.542"
-            app:layout_constraintStart_toEndOf="@+id/textPost"
-            app:layout_constraintTop_toBottomOf="@+id/tvFollower" />
+            android:textSize="12sp"/>
+            <!--app:layout_constraintEnd_toStartOf="@+id/textFollowing"-->
+            <!--app:layout_constraintHorizontal_bias="0.542"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/textPost"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/tvFollower" />-->
 
         <TextView
             android:id="@+id/tvFollowing"
@@ -71,18 +71,18 @@
             android:layout_marginRight="8dp"
             android:text="77"
             android:textColor="@android:color/background_dark"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="18sp"/>
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/textFollowing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Following"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvFollowing" />
+            android:textSize="12sp"/>
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/tvFollowing" />-->
 
         <TextView
             android:id="@+id/textEditProfile"
@@ -95,14 +95,14 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Edit your profile"
-            android:textColor="@android:color/background_dark"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textFollower"
-            app:layout_constraintVertical_bias="0.053"
-            android:textAlignment="center"/>
-    </android.support.constraint.ConstraintLayout>
+            android:textColor="@android:color/background_dark"/>
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintHorizontal_bias="0.501"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/textFollower"-->
+            <!--app:layout_constraintVertical_bias="0.053"-->
+            <!--android:textAlignment="center"/>-->
+    </LinearLayout>
 
 </merge>

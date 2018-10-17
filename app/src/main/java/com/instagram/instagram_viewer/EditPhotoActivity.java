@@ -1,4 +1,4 @@
-package comshaoqingliu.httpsgithub.Instagram;
+package com.instagram.instagram_viewer;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,7 +15,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import Helper.BitmapStore;
 import Helper.ImageProcessing;
-import comshaoqingliu.httpsgithub.helloworld.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
