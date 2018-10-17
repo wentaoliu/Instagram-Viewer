@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="comshaoqingliu.httpsgithub.Instagram.CameraActivity">
+
+<RelativeLayout
+    android:id="@+id/containerImg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <SurfaceView
+        android:id="@+id/surfaceView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
+
+    <GridView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    </GridView>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/surfaceView1"
+        android:layout_alignLeft="@+id/surfaceView1"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/grid" />
+
+    <Button
+        android:id="@+id/button_camera"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_gravity="bottom|center_vertical"
+        android:background="@drawable/camera_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        />
+
+    <ToggleButton
+        android:id="@+id/button_flash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Flash Button"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:id="@+id/textview_flash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Flash"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/button_flash"
+        android:layout_alignBottom="@+id/button_flash"
+        android:layout_toRightOf="@+id/button_camera"
+        android:layout_toEndOf="@+id/button_camera"
+        android:gravity="center_vertical|right"/>
+
+    <ImageButton
+        android:id="@+id/button_gallery"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/gallery_btn"
+        android:layout_alignBottom="@+id/button_camera"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/button_camera"
+        android:layout_toRightOf="@+id/textview_flash"
+        android:layout_toEndOf="@+id/textview_flash"/>
+
+
+</RelativeLayout>
+
+</FrameLayout>

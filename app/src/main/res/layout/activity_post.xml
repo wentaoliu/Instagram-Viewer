@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="30dp"
+    tools:context="comshaoqingliu.httpsgithub.Instagram.PostActivity">
+
+    <ImageView
+        android:id="@+id/post_view"
+        android:layout_width="360dp"
+        android:layout_height="360dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        />
+
+    <Button
+        android:id="@+id/button_post"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_height="40dp"
+        android:text="Post to Instagram"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/post_view"
+        android:background="@color/colorGreen"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/button_bluetooth"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_height="40dp"
+        android:text="Send via Bluetooth"
+        android:layout_below="@+id/button_post"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorGreen"/>
+
+
+
+</RelativeLayout>
