@@ -1,5 +1,6 @@
 package com.instagram.instagram_viewer;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,6 +16,9 @@ import android.widget.ArrayAdapter;
 
 import android.content.SharedPreferences;
 import android.content.Context;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
@@ -25,6 +29,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import java.io.InputStream;
+import java.util.Date;
 
 
 public class ActivityFeedListFragment extends Fragment {
@@ -143,6 +148,7 @@ public class ActivityFeedListFragment extends Fragment {
             }
 
             ImageView imgActorImage = (ImageView) convertView.findViewById(R.id.imgActorImage);
+            ImageView imgObj = (ImageView) convertView.findViewById(R.id.imgObj);
             TextView tvActorName = (TextView) convertView.findViewById(R.id.tvActorName);
             TextView tvVerb = (TextView) convertView.findViewById(R.id.tvVerb);
             TextView tvTargetName = (TextView) convertView.findViewById(R.id.tvTargetName);
@@ -173,8 +179,25 @@ public class ActivityFeedListFragment extends Fragment {
                     tvTargetName.setText("your post");
                 }
             }
-            
-            tvCreatedAt.setText(feed.createdAt);
+
+            Date date;
+            String strDate = "";
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+            try {
+                date = df.parse(feed.createdAt);
+                strDate = sdf.format(date);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            tvCreatedAt.setText(strDate);
+
+            if(feed.obj != null) {
+                new DownloadImageFromInternet(imgObj)
+                        .execute("http://imitagram.wnt.io" + feed.obj.image.standard_resolution);
+            }
 
 
             return convertView;
@@ -212,6 +235,7 @@ public class ActivityFeedListFragment extends Fragment {
 
         protected void onPostExecute(Bitmap result) {
             imageView.setImageBitmap(result);
+            imageView.setVisibility(View.VISIBLE);
         }
     }
 

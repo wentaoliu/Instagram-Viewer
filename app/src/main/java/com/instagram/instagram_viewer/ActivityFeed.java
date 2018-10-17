@@ -12,6 +12,8 @@ public class ActivityFeed {
 
     public SimpleUser target;
 
+    public ActionObject obj;
+
     @SerializedName("created_at")
     public String createdAt;
 
@@ -27,4 +29,16 @@ public class ActivityFeed {
         @SerializedName("profile_picture")
         public String profilePicture;
     }
+
+    public class ActionObject {
+        public int id;
+
+        public SimpleImage image;
+
+        public class SimpleImage {
+            public String standard_resolution;
+        }
+    }
+
+
 }
