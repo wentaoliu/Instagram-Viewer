@@ -6,9 +6,49 @@ tools:context="com.instagram.instagram_viewer.BluetoothClientActivity">
 
     <TextView
         android:id = "@+id/textclient"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Discovering"/>
+    <TextView
+        android:id = "@+id/bt1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Discovering"/>
+    <TextView
+        android:id = "@+id/bt2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Discovering"/>
+    <TextView
+        android:id = "@+id/bt3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Discovering"/>
+    <TextView
+        android:id = "@+id/bt4"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Discovering"/>
+    <TextView
+        android:id = "@+id/bt5"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Discovering"/>
+
+
+    <ListView
+        android:id="@+id/lvMyPhotos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+        android:layout_below="@+id/bt5"
+
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
 
 
 </RelativeLayout>

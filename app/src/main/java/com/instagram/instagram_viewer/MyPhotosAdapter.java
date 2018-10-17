@@ -86,6 +86,7 @@ public class MyPhotosAdapter extends ArrayAdapter<InstagramPhoto> implements Vie
         }
 
 
+
         // Ask for the photo to be added to the imageview based on the photo url
         // Background: Send a network request to the url, download the image bytes, convert into bitmap, insert bitmap into the imageview
         //Picasso.with(getContext()).load(photo.profileUrl).into(imgProfile);
@@ -105,7 +106,9 @@ public class MyPhotosAdapter extends ArrayAdapter<InstagramPhoto> implements Vie
 
     }
 
-
+    public interface OnClickListener {
+        public void sel(int num);
+    }
 
 
 }

@@ -15,10 +15,20 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,6 +40,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class BluetoothClientActivity extends AppCompatActivity {
 
     private static final String TAG = "haha";
@@ -38,6 +52,11 @@ public class BluetoothClientActivity extends AppCompatActivity {
 
     private static final int REQUEST_ENABLE_BT = 2;
     private TextView tv;
+    private TextView tv1;
+    private TextView tv2;
+    private TextView tv3;
+    private TextView tv4;
+    private TextView tv5;
 
     private BluetoothAdapter bluetoothAdapter;
 
@@ -53,6 +72,18 @@ public class BluetoothClientActivity extends AppCompatActivity {
     InputStream ClientInStream = null;
     OutputStream ClientOutStream = null;
     private String token;
+    private ArrayList<InstagramPhoto> comments;
+    private MyPhotosAdapter aComments;
+    private ListView lv;
+    private String url;
+    private ArrayList<TextView> tvList= new ArrayList<TextView>(){{
+        add(tv1);
+        add(tv2);
+        add(tv3);
+        add(tv4);
+        add(tv5);
+    }};
+    String stringTemp;
 
     private static android.os.Handler handler_process = new android.os.Handler(){
         public void handleMessage(Message msg){
@@ -79,7 +110,22 @@ public class BluetoothClientActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_client);
+        lv = (ListView)findViewById(R.id.lvMyPhotos);
+
+
+        try {
+            initRefreshLayout();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         tv = (TextView)findViewById(R.id.textclient);
+//        tv1 = (TextView)findViewById(R.id.bt1);
+//        tv2 = (TextView)findViewById(R.id.bt2);
+//        tv3 = (TextView)findViewById(R.id.bt3);
+//        tv4 = (TextView)findViewById(R.id.bt4);
+//        tv5 = (TextView)findViewById(R.id.bt5);
+
         startBluetoothSensor();
     }
 
@@ -137,16 +183,24 @@ public class BluetoothClientActivity extends AppCompatActivity {
             //when discovery finds a device
             if (BluetoothDevice.ACTION_FOUND.equals(action)){
                 // Get the BluetoothDevice object from the Intent
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 Log.d(TAG, "@ discovered devices: "+device.getAddress());
+                Toast.makeText(getApplicationContext(), "@ discovered devices: "+device.getAddress(), Toast.LENGTH_SHORT).show();
+                tv.setText("@ discovered devices: "+device.getAddress());
+                tv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        becomeClient(device);
 
+                    }
+                });
                 // call becomeClient
                 // use your server device Bluetooth address
                 //
-                if (device.getAddress().equals("A8:0C:63:4D:6F:D6"))
-                {
-                    becomeClient(device);
-                }
+//                if (device.getAddress().equals("A8:0C:63:4D:6F:D6"))
+//                {
+//                    becomeClient(device);
+//                }
 
             }
         }
@@ -253,7 +307,21 @@ public class BluetoothClientActivity extends AppCompatActivity {
                     }
 
                     // send data to server
-                    sendData("Client: Hello!");
+                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            Adapter adpter=parent.getAdapter();
+                            for (int i=0;i<adpter.getCount();i++){
+                                InstagramPhoto item=(InstagramPhoto) adpter.getItem(i);
+                                url =item.imageUrl;
+
+                            }
+                            sendData(url);
+
+                        }
+                    });
+
 
                     Log.d(TAG, "254");
 
@@ -366,5 +434,85 @@ public class BluetoothClientActivity extends AppCompatActivity {
 
         return true;
     }
+    private void initRefreshLayout() throws IOException {
+        // Configure the refreshing colors
+
+
+        fetchPhotos();
+
+    }
+
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void fetchPhotos() throws IOException {
+        comments = new ArrayList<InstagramPhoto>(); // initialize arraylist
+        // Create adapter bind it to the data in arraylist
+        aComments = new MyPhotosAdapter(this, comments);
+        // Populate the data into the listview
+        ListView lvComments = (ListView) findViewById(R.id.lvMyPhotos);
+        // Set the adapter to the listview (population of items)
+        lvComments.setAdapter(aComments);
+        // https://api.instagram.com/v1/media/<id>/comments?client_id=<clientid>
+        // Setup comments url endpoint
+        String commentsUrl = "http://imitagram.wnt.io/users/self/media/recent";
+
+        // Create the network client
+        get(commentsUrl, token);
+
+    }
+
+    OkHttpClient client = new OkHttpClient();
+
+    void get(String url, String token) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization", token)
+                .build();
+        JSONArray photosJSON = null;
+//        Comment comment = new Comment();
+//        comment.profileUrl = " http://img.tupianzj.com/uploads/allimg/141014/1-1410141AH02K.jpg";
+//        comment.username = "huo";
+//        comment.text = "helloWorld!helloWorld!helloWorld!helloWorld!helloWorld!helloWorld!helloWorld!";
+//        comment.createdTime = "1279340983";
+//        comments.add(comment);
+//        aComments.notifyDataSetChanged();
+
+        try (Response response = client.newCall(request).execute()) {
+            stringTemp = response.body().string();
+            comments.clear();
+            photosJSON = new JSONArray(stringTemp);
+            // put newest at the top
+            for (int i = photosJSON.length() - 1; i >= 0; i--) {
+                JSONObject photoJSON = photosJSON.getJSONObject(i);
+                InstagramPhoto photo = new InstagramPhoto();
+                photo.imageUrl = photoJSON.getJSONObject("image").getString("standard_resolution");
+                comments.add(photo);
+            }
+            // Notified the adapter that it should populate new changes into the listview
+            aComments.notifyDataSetChanged();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

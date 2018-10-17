@@ -31,21 +31,10 @@ import okhttp3.Response;
 public class SwipeShareActivity extends AppCompatActivity {
     private ArrayList<InstagramPhoto> comments;
     private MyPhotosAdapter aComments;
-    private String id;
     private String token;
     private SwipeRefreshLayout swipeContainer;
-    private ListView lvPhotos;
-
-
-    private EditText comment_content;
-    private Button comment_send;
-
-    private LinearLayout rl_enroll;
-    private RelativeLayout rl_comment;
-
 
     String stringTemp;
-    JSONObject jsonObjectTemp = new JSONObject();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

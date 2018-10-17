@@ -70,7 +70,7 @@ public class BluetoothServerActivity extends AppCompatActivity {
         public void handleMessage(Message msg){
 
             if (msg.what==MESSAGE_RECEIVED){
-                photo.bitmap = (Bitmap)msg.obj;
+                photo.imageUrl = (String)msg.obj;
                 aComments.notifyDataSetChanged();
                 Log.d(TAG, msg.obj.toString());
             }else if (msg.what==CONNECTION_SUCCESSFUL){
@@ -109,6 +109,13 @@ public class BluetoothServerActivity extends AppCompatActivity {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         fetchPhotos();
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                aComments.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
+            }
+        });
 
     }
     private void fetchPhotos() throws IOException {
@@ -305,13 +312,17 @@ public class BluetoothServerActivity extends AppCompatActivity {
 
                     while (isServerRunning &&ServerInStream != null) {
 
-                        Bitmap bitmap = BitmapFactory.decodeStream(ServerInStream);
+                        BufferedReader br = new BufferedReader(new InputStreamReader(ServerInStream));
                         // readLine() read and delete one line
-                        // send a message to the UI thread
-                        Message message = new Message();
-                        message.what = MESSAGE_RECEIVED;
-                        message.obj = bitmap;
-                        handler_process.sendMessage(message);
+                        while ((line = br.readLine()) != null) {
+                            Log.d(TAG, "@message " + line);
+                            // send a message to the UI thread
+                            Message message = new Message();
+                            message.what = MESSAGE_RECEIVED;
+                            message.obj = line;
+                            handler_process.sendMessage(message);
+
+                        }
 
 
 

@@ -27,9 +27,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         token = getIntent().getStringExtra("token");
+        longitude = getLongitude();
+        latitude = getLatitude();
+
         saveToken(token);
-        longitude = getIntent().getDoubleExtra("longitude",0);
-        latitude = getIntent().getDoubleExtra("latitude",0);
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -79,7 +82,19 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("token", token);
         editor.commit();
     }
+    private double getLatitude() {
 
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        double latitude = (double)sharedPref.getFloat("latitude", 0);
+        System.out.println("____________"+latitude);
+        return latitude;
+    }
+    private double getLongitude() {
+
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        double longitude = (double)sharedPref.getFloat("longitude", 0);
+        return longitude;
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -135,4 +150,5 @@ public class MainActivity extends AppCompatActivity {
         return fragment;
 
     }
+
 }

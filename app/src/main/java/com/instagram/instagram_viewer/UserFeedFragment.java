@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -115,14 +116,16 @@ public class UserFeedFragment extends Fragment {
         });
         lvPhotos = (ListView) mView.findViewById(R.id.lvPhotos);
         token = (String)getArguments().get("token");
-        location = LoginActivity.getLocation();
-        if(location != null) {
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-        }else{
-            latitude = 0;
-            longitude = 0;
-        }
+        latitude = (Double)getArguments().get("latitude");
+        latitude = (Double)getArguments().get("longitude");
+
+//        if(location != null) {
+//            latitude = location.getLatitude();
+//            longitude = location.getLongitude();
+//        }else{
+//            latitude = 0;
+//            longitude = 0;
+//        }
         try {
             initRefreshLayout();
         } catch (IOException e) {
@@ -270,5 +273,17 @@ public class UserFeedFragment extends Fragment {
             return -1;
         }
     }
+    private double getLatitude() {
 
+        SharedPreferences sharedPref = this.getActivity().getPreferences(Context.MODE_PRIVATE);
+        double latitude = (double)sharedPref.getFloat("latitude", 0);
+        System.out.println("____________"+latitude);
+        return latitude;
+    }
+    private double getLongitude() {
+
+        SharedPreferences sharedPref = this.getActivity().getPreferences(Context.MODE_PRIVATE);
+        double longitude = (double)sharedPref.getFloat("longitude", 0);
+        return longitude;
+    }
 }

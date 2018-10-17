@@ -4,6 +4,7 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -89,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     private TextView mRegisterView;
     private LocationManager lm;
-    public static Location location;
+    private Location location;
 
     LocationListener locationListener;
 
@@ -358,6 +359,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                     intent.putExtra("token",token_final);
 
+
                     startActivity(intent);
                     overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }else{
@@ -456,7 +458,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (gps_enabled) {
             Log.d("haha", " gps_enabled");
 
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 20000, 1, locationListener);
+            //lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 20000, 1, locationListener);
 
             lm.requestLocationUpdates(providerGPS, 0, 0, locationListener);
             gps_loc = lm.getLastKnownLocation(providerGPS);
@@ -495,9 +497,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (finalLoc != null) {
             location = finalLoc;
             double latitude = finalLoc.getLatitude();
-
             double longitude = finalLoc.getLongitude();
-
+            saveLongitude((float)longitude);
+            saveLatitude((float)latitude);
             Log.d("haha", "latitude：" + latitude + "\nlongitude" + longitude);
 
             // if we are in melbourne, we get negative latitude.
@@ -541,6 +543,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onLocationChanged(Location location) {
                 double longitude = location.getLongitude();
                 double latitude = location.getLatitude();
+                saveLongitude((float)longitude);
+                saveLatitude((float)latitude);
+                Log.d("haha",  "Location latitude " + location.getLatitude() );
+                Log.d("haha",  "Location longitude " + location.getLongitude() );
                 //location.getProvider();
                 Log.d("haha", "" + location.getProvider() + " Location latitude " + latitude + "\nlongitude:" + longitude);
             }
@@ -626,9 +632,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // permissions this app might request.
         }
     }
+    private void saveLatitude(Float latitude ) {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
 
-    public static Location getLocation(){
-        return location;
+        editor.putFloat("latitude", latitude);
+
+        editor.commit();
     }
+    private void saveLongitude(Float longitude ) {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putFloat("longitude", longitude);
+
+        editor.commit();
+    }
+
 }
 
