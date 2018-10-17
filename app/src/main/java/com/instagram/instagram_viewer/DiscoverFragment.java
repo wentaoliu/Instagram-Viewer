@@ -32,7 +32,9 @@ public class DiscoverFragment extends Fragment {
 
     TextView fragmentText;
 
-    private TextView tv;
+    private Button tv;
+    private Button share;
+
     public View mView;
     private ListView lvUser;
     private TextView tvSearch;
@@ -61,7 +63,9 @@ public class DiscoverFragment extends Fragment {
         token = (String)getArguments().get("token");
         mView = inflater.inflate(R.layout.activity_discover, container, false);
         tvSearch = (TextView) mView.findViewById(R.id.text_search);
-        tv = (TextView) mView.findViewById(R.id.meet_friend);
+        tv = (Button) mView.findViewById(R.id.meet_friend);
+        share = (Button) mView.findViewById(R.id.adhoc_share);
+
         search = (Button) mView.findViewById(R.id.search);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +82,15 @@ public class DiscoverFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), SuggestionActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("token",token);
+                getContext().startActivity(intent);
+            }
+        });
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ShareActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("token",token);
                 getContext().startActivity(intent);

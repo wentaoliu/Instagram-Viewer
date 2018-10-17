@@ -73,6 +73,8 @@ public class UserFeedFragment extends Fragment {
     private Location location;
     private double latitude;
     private double longitude;
+    private static final double EARTH_RADIUS = 6378137.0;
+
 
     String stringTemp;
     JSONObject jsonObjectTemp = new JSONObject();
@@ -206,6 +208,8 @@ public class UserFeedFragment extends Fragment {
                 photo.commentsCount = photoJSON.getJSONObject("comments").getInt("count");
                 photo.lat =  photoJSON.getJSONObject("location").getDouble("latitude");
                 photo.lng =  photoJSON.getJSONObject("location").getDouble("longitude");
+                photo.distance = getDistance(photo.lng,photo.lat,longitude,latitude);
+                System.out.println(photo.distance);
                 photo.id = photoJSON.getString("id");
                 photos.add(photo);
                 aPhotos.notifyDataSetChanged();
@@ -218,22 +222,26 @@ public class UserFeedFragment extends Fragment {
     String getToken(){
         return token;
     }
-    public double getDistance(double latitude1, double longitude1) {
-        double lng_dest = (Math.PI / 180) * longitude1;
-        double lat_dest = (Math.PI / 180) * latitude1;
 
-
-        double lng_cur = (Math.PI / 180) *  longitude;
-        double lat_cur = (Math.PI / 180) * latitude;
-
-        double R = 6371;
-
-        double d = Math.acos(Math.sin(lat_cur) * Math.sin(lat_dest) + Math.cos(lat_cur) * Math.cos(lat_dest) * Math.cos(lng_dest - lng_cur))* R;
-        return d;
+    public static double getDistance(double longitude1, double latitude1,
+                                     double longitude2, double latitude2) {
+        double Lat1 = rad(latitude1);
+        double Lat2 = rad(latitude2);
+        double a = Lat1 - Lat2;
+        double b = rad(longitude1) - rad(longitude2);
+        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
+                + Math.cos(Lat1) * Math.cos(Lat2)
+                * Math.pow(Math.sin(b / 2), 2)));
+        s = s * EARTH_RADIUS;
+        s = Math.round(s * 10000) / 10000;
+        return s;
+    }
+    private static double rad(double d) {
+        return d * Math.PI / 180.0;
     }
     class SortByTime implements Comparator {
         public int compare(Object o1, Object o2) {
-            SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
             InstagramPhoto s1 = (InstagramPhoto) o1;
             InstagramPhoto s2 = (InstagramPhoto) o2;
             long s1t = 0,s2t = 0;

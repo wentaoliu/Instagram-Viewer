@@ -1,5 +1,7 @@
 package com.instagram.instagram_viewer;
 
+import android.graphics.Bitmap;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -11,7 +13,7 @@ public class InstagramPhoto {
     public String username;
     public String caption;
     public String createdTime;
-    public String imageUrl;
+    public String imageUrl = null;
     public String profileUrl;
     public String comment1;
     public String user1;
@@ -24,6 +26,7 @@ public class InstagramPhoto {
     public double lat;
     public double lng;
     public double distance;
+    public Bitmap bitmap = null;
 
     public String getRelativeTime() throws ParseException {
         SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");//如2016-08-10 20:40

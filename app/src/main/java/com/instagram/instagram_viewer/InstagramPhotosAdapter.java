@@ -66,10 +66,8 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> impleme
 
         final ImageView like = (ImageView) convertView.findViewById(R.id.like);
         final TextView tvLikes = (TextView) convertView.findViewById(R.id.tvLikes);
-        final TextView tvCaption = (TextView) convertView.findViewById(R.id.tvCaption);
         TextView tvViewAllComments = (TextView) convertView.findViewById(R.id.tvViewAllComments);
-        TextView tvComment1 = (TextView) convertView.findViewById(R.id.tvComment1);
-        TextView tvComment2 = (TextView) convertView.findViewById(R.id.tvComment2);
+
 
         // Populate the subviews (textfield, imageview) with the correct data
         tvUsername.setText(photo.username);
@@ -80,12 +78,6 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> impleme
         }
         tvDistance.setText(photo.getRelativeDistance());
 
-        if (photo.caption != null) {
-            tvCaption.setText(Html.fromHtml("<font color='#3f729b'><b>" + photo.username + "</b></font> " + photo.caption));
-            tvCaption.setVisibility(View.VISIBLE);
-        } else {
-            tvCaption.setVisibility(View.GONE);
-        }
         like.setImageResource(R.drawable.like_release);
         like.setOnClickListener(new View.OnClickListener() {
             @Override

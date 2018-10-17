@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-feature android:name="android.hardware.location.network" />
     <uses-feature android:name="android.hardware.location.gps" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
 
     <application
@@ -48,6 +50,34 @@
         <activity
             android:name="com.instagram.instagram_viewer.SuggestionActivity"
             android:label="Suggestions"
+            >
+
+
+        </activity>
+        <activity
+            android:name="com.instagram.instagram_viewer.ShareActivity"
+            android:label="ADHOC Share"
+            >
+
+
+        </activity>
+        <activity
+            android:name="com.instagram.instagram_viewer.BluetoothClientActivity"
+            android:label="Explore"
+            >
+
+
+        </activity>
+        <activity
+            android:name="com.instagram.instagram_viewer.BluetoothServerActivity"
+            android:label="Wait for connection"
+            >
+
+
+        </activity>
+        <activity
+            android:name="com.instagram.instagram_viewer.SwipeShareActivity"
+            android:label="My photos"
             >
 
 

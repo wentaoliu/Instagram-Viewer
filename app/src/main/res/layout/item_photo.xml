@@ -14,20 +14,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="3"
-        android:ellipsize="end"
-        android:text="@string/caption_default_text"
-        android:id="@+id/tvCaption"
-        android:layout_below="@+id/tvLikes"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:paddingTop="4dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingBottom="0dp" />
+
 
     <ImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -102,31 +89,7 @@
         android:textStyle="bold"
         android:textColor="@color/instagram_bold_font" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/comment_1_default_text"
-        android:id="@+id/tvComment1"
-        android:paddingLeft="8dp"
-        android:paddingTop="0dp"
-        android:paddingRight="8dp"
-        android:paddingBottom="0dp"
-        android:layout_below="@+id/tvViewAllComments"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/comment_2_default_text"
-        android:id="@+id/tvComment2"
-        android:paddingLeft="8dp"
-        android:paddingTop="0dp"
-        android:paddingRight="8dp"
-        android:paddingBottom="0dp"
-        android:layout_below="@+id/tvComment1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -134,7 +97,7 @@
         android:clickable="true"
         android:text="@string/view_all_comments_default_text"
         android:id="@+id/tvViewAllComments"
-        android:layout_below="@+id/tvCaption"
+        android:layout_below="@+id/tvLikes"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingTop="0dp"

@@ -38,14 +38,42 @@
         android:divider="@null"
         android:dividerHeight="0dp" />
 
-    <TextView android:id="@+id/meet_friend"
-        android:layout_width="fill_parent"
-        android:layout_height="24dp"
-        android:layout_alignParentBottom="true"
-        android:text="Meet more friend"
-        android:textColor =  "#000000"
-        android:gravity="center"
 
-        android:textSize="16dip"/>
+    <LinearLayout android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_width="fill_parent">
+        <Button
+            android:id="@+id/meet_friend"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+
+            android:background="@color/primary_darker"
+            android:text="SUGGESTED USER"
+            android:layout_toLeftOf="@+id/sortByDistance"
+
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+
+
+        <Button
+            android:id="@+id/adhoc_share"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+
+
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/primary_darker"
+            android:text="ADHOC SHARE"
+            android:paddingLeft="3dp"
+
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+    </LinearLayout>
 
 </RelativeLayout>
