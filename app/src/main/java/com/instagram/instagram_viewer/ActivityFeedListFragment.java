@@ -17,6 +17,15 @@ import android.content.SharedPreferences;
 import android.content.Context;
 import java.util.ArrayList;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.ImageView;
+import java.io.InputStream;
+
 
 public class ActivityFeedListFragment extends Fragment {
     TextView tv;
@@ -141,6 +150,11 @@ public class ActivityFeedListFragment extends Fragment {
 
             //imgActorImage.setImageURI(feed.actor.profile_picture);
             tvActorName.setText(feed.actor.username);
+            if(feed.actor.profilePicture != null) {
+                new DownloadImageFromInternet(imgActorImage)
+                        .execute("http://imitagram.wnt.io" + feed.actor.profilePicture);
+
+            }
 
             if(feed.verb.equals("follow")) {
                 tvVerb.setText("followed");
@@ -174,4 +188,31 @@ public class ActivityFeedListFragment extends Fragment {
         String token = sharedPref.getString("token", "null");
         return token;
     }
+
+    private class DownloadImageFromInternet extends AsyncTask<String, Void, Bitmap> {
+        ImageView imageView;
+
+        public DownloadImageFromInternet(ImageView imageView) {
+            this.imageView = imageView;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String imageURL = urls[0];
+            Bitmap bimage = null;
+            try {
+                InputStream in = new java.net.URL(imageURL).openStream();
+                bimage = BitmapFactory.decodeStream(in);
+
+            } catch (Exception e) {
+                Log.e("Error Message", e.getMessage());
+                e.printStackTrace();
+            }
+            return bimage;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            imageView.setImageBitmap(result);
+        }
+    }
+
 }
