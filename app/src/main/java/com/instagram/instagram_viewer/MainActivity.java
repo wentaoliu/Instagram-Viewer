@@ -1,5 +1,7 @@
 package com.instagram.instagram_viewer;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         token = getIntent().getStringExtra("token");
+        saveToken(token);
         longitude = getIntent().getDoubleExtra("longitude",0);
         latitude = getIntent().getDoubleExtra("latitude",0);
         super.onCreate(savedInstanceState);
@@ -68,6 +71,15 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.setList(list);
 
     }
+
+
+    private void saveToken(String token) {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("token", token);
+        editor.commit();
+    }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 

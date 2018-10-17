@@ -56,6 +56,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.FormBody;
 
+import android.content.SharedPreferences;
+
 
 /**
  * A login screen that offers login via email/password.

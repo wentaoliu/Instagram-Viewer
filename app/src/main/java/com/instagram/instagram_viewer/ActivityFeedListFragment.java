@@ -13,8 +13,8 @@ import okhttp3.*;
 import com.google.gson.Gson;
 import android.widget.ArrayAdapter;
 
-import org.w3c.dom.Text;
-
+import android.content.SharedPreferences;
+import android.content.Context;
 import java.util.ArrayList;
 
 
@@ -90,7 +90,7 @@ public class ActivityFeedListFragment extends Fragment {
 
         Request request = new Request.Builder()
                 .url(url)
-                .header("Authorization", "Token " + getToken())
+                .header("Authorization", getToken())
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -167,10 +167,11 @@ public class ActivityFeedListFragment extends Fragment {
         }
     }
 
-    // TODO
-    private static final String token = "3d7d58e624babf3e12a5e6622f160090acac78f5"; //  temp
 
     private String getToken() {
+
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String token = sharedPref.getString("token", "null");
         return token;
     }
 }
