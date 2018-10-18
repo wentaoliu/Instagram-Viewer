@@ -169,8 +169,22 @@ public class BluetoothClientActivity extends AppCompatActivity {
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         if (pairedDevices.size() > 0) {
             // Loop through paired devices
-            for (BluetoothDevice device : pairedDevices) {
+            for (final BluetoothDevice device : pairedDevices) {
                 Log.d(TAG, "@ paired devices: "+device.getAddress());
+                tv.setText("@ discovered devices: "+device.getAddress());
+//                if (device.getAddress().equals("CC:2D:B7:B4:D2:93"))
+//                {
+//                    System.out.println("----------------");
+//                    becomeClient(device);
+//                }
+//                tv.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        becomeClient(device);
+//
+//                    }
+//                });
+                becomeClient(device);
             }
         }
     }
@@ -186,19 +200,13 @@ public class BluetoothClientActivity extends AppCompatActivity {
                 final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 Log.d(TAG, "@ discovered devices: "+device.getAddress());
                 Toast.makeText(getApplicationContext(), "@ discovered devices: "+device.getAddress(), Toast.LENGTH_SHORT).show();
-                tv.setText("@ discovered devices: "+device.getAddress());
-                tv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        becomeClient(device);
 
-                    }
-                });
                 // call becomeClient
                 // use your server device Bluetooth address
                 //
-//                if (device.getAddress().equals("A8:0C:63:4D:6F:D6"))
+//                if (device.getAddress().equals("CC:2D:B7:B4:D2:93"))
 //                {
+//                    System.out.println("----------------");
 //                    becomeClient(device);
 //                }
 

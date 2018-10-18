@@ -86,14 +86,14 @@ public class MainActivity extends AppCompatActivity {
     private double getLatitude() {
 
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        double latitude = (double)sharedPref.getFloat("latitude", 0);
+        double latitude = (double)sharedPref.getFloat("latitude", 37);
         System.out.println("____________"+latitude);
         return latitude;
     }
     private double getLongitude() {
 
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        double longitude = (double)sharedPref.getFloat("longitude", 0);
+        double longitude = (double)sharedPref.getFloat("longitude", -122);
         return longitude;
     }
 
