@@ -80,18 +80,17 @@ public class ActivityFeedListFragment extends Fragment {
         // Attach the adapter to a ListView
         ListView listView = (ListView) v.findViewById(R.id.lvFeed);
         listView.setAdapter(adapter);
-
+        try {
+            fetchData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return v;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        try {
-            fetchData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 //
 //    @Override
@@ -194,7 +193,7 @@ public class ActivityFeedListFragment extends Fragment {
 
             tvCreatedAt.setText(strDate);
 
-            if(feed.obj != null) {
+            if(feed.obj != null && feed.verb.equals("like")) {
                 new DownloadImageFromInternet(imgObj)
                         .execute("http://imitagram.wnt.io" + feed.obj.image.standard_resolution);
             }

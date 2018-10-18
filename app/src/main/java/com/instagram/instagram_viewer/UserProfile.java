@@ -2,7 +2,7 @@ package com.instagram.instagram_viewer;
 
 public class UserProfile {
 
-    public String profileUrl;
+    public String profile_picture;
     public String username;
     public int id;
     public int media;

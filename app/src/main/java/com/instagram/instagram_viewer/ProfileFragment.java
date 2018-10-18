@@ -2,8 +2,12 @@ package com.instagram.instagram_viewer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +19,7 @@ import com.bumptech.glide.Glide;
 import okhttp3.*;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.io.InputStream;
 
 
 public class ProfileFragment extends Fragment {
@@ -56,7 +61,14 @@ public class ProfileFragment extends Fragment {
 
         Glide.with(this).load(R.drawable.profile).into(imgProfilePicture);
 
-        gridView.setAdapter(new ProfileGridViewAdapter(this.getContext(), UploadedImage));
+//        gridView.setAdapter(new ProfileGridViewAdapter(this.getContext(), UploadedImage));
+
+        try {
+            fetchProfileData();
+            fetchRecentPictures();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return view;
     }
@@ -64,15 +76,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        try {
-            fetchProfileData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
-//
-
-
 
 
     OkHttpClient client = new OkHttpClient();
@@ -95,6 +99,11 @@ public class ProfileFragment extends Fragment {
                 final String myResponse = response.body().string();
                 Gson gson = new Gson();
                 final UserProfile user = gson.fromJson(myResponse, UserProfile.class);
+                if(user.profile_picture != null) {
+                    new DownloadImageFromInternet(imgProfilePicture)
+                            .execute("http://imitagram.wnt.io" + user.profile_picture);
+
+                }
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -107,24 +116,43 @@ public class ProfileFragment extends Fragment {
                 });
 
             }
-        });}
+        });
+    }
 
+    void fetchRecentPictures() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("http://imitagram.wnt.io/users/self/media/recent")
+                .header("Authorization", getToken())
+                .build();
 
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                call.cancel();
+            }
 
-    public static String[] UploadedImage = {
-            "https://cdn.shopify.com/s/files/1/0787/5255/products/bando-il-all_around_giant_circle_towel-watermelon-02.jpg?v=1520470527",
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRG1C3EZxYiCPNKf7mi3lXE33eFF71v-SKTvxyuKwFRrwlm_T7o",
-            "https://www.houseofparty.com.au/wp-content/uploads/2016/06/balloon-large-foil-watermelon.jpg",
-            "https://leoandbella.com.au/wp-content/uploads/2017/11/wally-the-watermelon.jpg",
-            "https://img.purch.com/w/660/aHR0cDovL3d3dy5zcGFjZS5jb20vaW1hZ2VzL2kvMDAwLzAwNS82NDQvb3JpZ2luYWwvbW9vbi13YXRjaGluZy1uaWdodC0xMDA5MTYtMDIuanBn",
-            "https://leoandbella.com.au/wp-content/uploads/2017/11/wally-the-watermelon.jpg",
-            "https://leoandbella.com.au/wp-content/uploads/2017/11/wally-the-watermelon.jpg",
-            "https://leoandbella.com.au/wp-content/uploads/2017/11/wally-the-watermelon.jpg",
-            "https://leoandbella.com.au/wp-content/uploads/2017/11/wally-the-watermelon.jpg",
-            "https://leoandbella.com.au/wp-content/uploads/2017/11/wally-the-watermelon.jpg",
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String myResponse = response.body().string();
+                Gson gson = new Gson();
+                final SelfImage[] images = gson.fromJson(myResponse, SelfImage[].class);
+                final String[] imageUrls = new String[images.length];
+                for( int i=0;i<images.length; i++) {
+                    imageUrls[i] = "http://imitagram.wnt.io" + images[i].image.standard_resolution;
+                }
 
-    };
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
+                        gridView.setAdapter(new ProfileGridViewAdapter(getContext(), imageUrls));
+                    }
+                });
+
+            }
+        });
+    }
 
 
     private String getToken() {
@@ -132,5 +160,43 @@ public class ProfileFragment extends Fragment {
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         String token = sharedPref.getString("token", "null");
         return token;
+    }
+
+
+    public class SelfImage {
+        public int id;
+
+        public SimpleImage image;
+
+        public class SimpleImage {
+            public String standard_resolution;
+        }
+    }
+
+    private class DownloadImageFromInternet extends AsyncTask<String, Void, Bitmap> {
+        ImageView imageView;
+
+        public DownloadImageFromInternet(ImageView imageView) {
+            this.imageView = imageView;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String imageURL = urls[0];
+            Bitmap bimage = null;
+            try {
+                InputStream in = new java.net.URL(imageURL).openStream();
+                bimage = BitmapFactory.decodeStream(in);
+
+            } catch (Exception e) {
+                Log.e("Error Message", e.getMessage());
+                e.printStackTrace();
+            }
+            return bimage;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            imageView.setImageBitmap(result);
+            imageView.setVisibility(View.VISIBLE);
+        }
     }
 }
