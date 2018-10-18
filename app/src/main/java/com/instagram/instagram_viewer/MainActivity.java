@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         });
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
+        viewPager.setOffscreenPageLimit(4);
         List<Fragment> list = new ArrayList<>();
         list.add(getInstance1(token,latitude,longitude));
         list.add(getInstance2(token));
