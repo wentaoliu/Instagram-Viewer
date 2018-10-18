@@ -53,6 +53,22 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
     // On create, first initialize the view elements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        try {
+//            check permission before open camera
+            if (ActivityCompat.checkSelfPermission(this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_CAMERA_REQUEST_CODE);
+            }
+
+            camera = Camera.open();
+        } catch(RuntimeException e) {
+            Toast.makeText(getApplicationContext(), "Device Camera is " +
+                    "not working properly, please try after sometime.", Toast.LENGTH_LONG).show();
+        }
+
+
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -97,6 +113,14 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
 
                 if (!hasFlash) {
                     Toast.makeText(getApplicationContext(), "Sorry, your device doesn't support flash light!", Toast.LENGTH_LONG).show();
+                    if (camera == null) {
+                        camera = Camera.open();
+                    }
+                    Camera.Parameters parameters = camera.getParameters();
+                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+                    camera.setParameters(parameters);
+                    camera.startPreview();
                 } else {
                     if (isChecked) {
                         // The toggle is enabled
@@ -223,19 +247,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.d("surfaceCreated","---------surfaceCreated begins--------");
-        try {
-//            check permission before open camera
-            if (ActivityCompat.checkSelfPermission(this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-                    || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        MY_CAMERA_REQUEST_CODE);
-            }
 
-            camera = Camera.open();
-        } catch(RuntimeException e) {
-            Toast.makeText(getApplicationContext(), "Device Camera is " +
-                    "not working properly, please try after sometime.", Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override

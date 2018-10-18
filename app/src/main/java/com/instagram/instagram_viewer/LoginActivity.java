@@ -13,6 +13,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -633,7 +634,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
     private void saveLatitude(Float latitude ) {
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
 
         editor.putFloat("latitude", latitude);
@@ -641,7 +642,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         editor.commit();
     }
     private void saveLongitude(Float longitude ) {
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putFloat("longitude", longitude);
 

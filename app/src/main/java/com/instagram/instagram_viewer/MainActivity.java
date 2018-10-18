@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         list.add(getInstance2(token));
         //list.add(TestFragment.newInstance("UserFeed"));
         //list.add(TestFragment.newInstance("Discover"));
-        list.add(TestFragment.newInstance("UploadPhoto"));
+        list.add(TestFragment.newInstance());
         list.add(ActivityFeedFragment.newInstance());
         list.add(ProfileFragment.newInstance());
         viewPagerAdapter.setList(list);
@@ -78,21 +79,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void saveToken(String token) {
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("token", token);
         editor.commit();
     }
     private double getLatitude() {
 
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         double latitude = (double)sharedPref.getFloat("latitude", 37);
         System.out.println("____________"+latitude);
         return latitude;
     }
     private double getLongitude() {
 
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         double longitude = (double)sharedPref.getFloat("longitude", -122);
         return longitude;
     }

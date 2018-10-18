@@ -31,9 +31,9 @@ public class EditPhotoActivity extends AppCompatActivity {
     private Bitmap newBitmap;
     private Bitmap scaledBitmap;
 
-    private Button btnColorFilter = null;
-    private Button btnSaturation = null;
-    private Button btnEngrave = null;
+    private Button btnFilterRed = null;
+    private Button btnFilterGreen = null;
+    private Button btnFilterBlue = null;
     private Button btnCrop = null;
     private SeekBar seekBarContrast = null;
     private SeekBar seekBarBrightness = null;
@@ -59,49 +59,55 @@ public class EditPhotoActivity extends AppCompatActivity {
         }
 
         // Filters
-        btnColorFilter = (Button) findViewById(R.id.button_color);
-        btnSaturation = (Button) findViewById(R.id.button_saturation);
-        btnEngrave = (Button) findViewById(R.id.button_engrave);
+        btnFilterRed = (Button) findViewById(R.id.btnFilterRed);
+        btnFilterGreen = (Button) findViewById(R.id.btnFilterGreen);
+        btnFilterBlue = (Button) findViewById(R.id.btnFilterBlue);
         btnCrop = (Button) findViewById(R.id.button_crop);
 
 
-        btnColorFilter.setOnClickListener(new View.OnClickListener() {
+        btnFilterRed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(FILTER_STATIC == 1) {
-                    newBitmap = ImageProcessing.doColorFilter(rawBitmap, 0.5, 0.5, 0.5);
+                    newBitmap = ImageProcessing.doColorFilter(rawBitmap, 1, 0, 0);
                     imageView.setImageBitmap(newBitmap);
+                    BitmapStore.setBitmap(newBitmap);
                 } else {
-                    newBitmap = ImageProcessing.doColorFilter(newBitmap, 0.5, 0.5, 0.5);
+                    newBitmap = ImageProcessing.doColorFilter(newBitmap, 1, 0, 0);
                     imageView.setImageBitmap(newBitmap);
+                    BitmapStore.setBitmap(newBitmap);
                     FILTER_STATIC = 1;
                 }
             }
         });
 
-        btnSaturation.setOnClickListener(new View.OnClickListener() {
+        btnFilterGreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(FILTER_STATIC == 1) {
-                    newBitmap = ImageProcessing.applySaturationFilter(rawBitmap, 1);
+                    newBitmap = ImageProcessing.doColorFilter(rawBitmap, 0, 1, 0);
                     imageView.setImageBitmap(newBitmap);
+                    BitmapStore.setBitmap(newBitmap);
                 } else {
-                    newBitmap = ImageProcessing.applySaturationFilter(newBitmap, 1);
+                    newBitmap = ImageProcessing.doColorFilter(newBitmap, 0, 1, 0);
                     imageView.setImageBitmap(newBitmap);
+                    BitmapStore.setBitmap(newBitmap);
                     FILTER_STATIC = 1;
                 }
             }
         });
 
-        btnEngrave.setOnClickListener(new View.OnClickListener() {
+        btnFilterBlue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(FILTER_STATIC == 1) {
-                    newBitmap = ImageProcessing.engrave(rawBitmap);
+                    newBitmap = ImageProcessing.doColorFilter(rawBitmap, 0, 0, 1);
                     imageView.setImageBitmap(newBitmap);
+                    BitmapStore.setBitmap(newBitmap);
                 } else {
-                    newBitmap = ImageProcessing.engrave(newBitmap);
+                    newBitmap = ImageProcessing.doColorFilter(newBitmap, 0, 0, 1);
                     imageView.setImageBitmap(newBitmap);
+                    BitmapStore.setBitmap(newBitmap);
                     FILTER_STATIC = 1;
                 }
             }

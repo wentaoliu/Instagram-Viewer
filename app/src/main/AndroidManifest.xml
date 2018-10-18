@@ -13,6 +13,9 @@
     <uses-feature android:name="android.hardware.location.gps" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
 
     <application
@@ -78,6 +81,32 @@
         <activity
             android:name="com.instagram.instagram_viewer.SwipeShareActivity"
             android:label="My photos"
+            >
+
+
+        </activity>
+        <activity
+            android:name="com.instagram.instagram_viewer.CameraActivity"
+            android:label="Camera"
+            >
+
+
+        </activity>
+        <activity
+            android:name="com.instagram.instagram_viewer.CropActivity"
+            android:label="Crop"
+            >
+
+
+        </activity>
+        <activity
+            android:name="com.instagram.instagram_viewer.EditPhotoActivity"
+            android:label="Edit"
+            >
+        </activity>
+        <activity
+            android:name="com.instagram.instagram_viewer.PostActivity"
+            android:label="Post"
             >
 
 

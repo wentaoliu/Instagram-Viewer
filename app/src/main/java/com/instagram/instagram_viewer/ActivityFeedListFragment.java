@@ -118,14 +118,19 @@ public class ActivityFeedListFragment extends Fragment {
                 final String myResponse = response.body().string();
 
                 Gson gson = new Gson();
-                final ActivityFeed[] res = gson.fromJson(myResponse, ActivityFeed[].class);
+                final ActivityFeed[] res;
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.addAll(res);
-                    }
-                });
+                try {
+                    res = gson.fromJson(myResponse, ActivityFeed[].class);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.addAll(res);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
         });
