@@ -163,7 +163,26 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
             }
         });
     }
-        /**************************************** Button to Enter Gallery *******************************/
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(camera==null) {
+            try {
+//            check permission before open camera
+                if (ActivityCompat.checkSelfPermission(this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                        || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            MY_CAMERA_REQUEST_CODE);
+                }
+
+                camera = Camera.open();
+            } catch(RuntimeException e) {
+                Toast.makeText(getApplicationContext(), "Device Camera is " +
+                        "not working properly, please try after sometime.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
     Camera.ShutterCallback cameraShutterCallback = new Camera.ShutterCallback(){
         @Override

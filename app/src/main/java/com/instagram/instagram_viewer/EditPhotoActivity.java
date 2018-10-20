@@ -55,6 +55,7 @@ public class EditPhotoActivity extends AppCompatActivity {
             rawBitmap = BitmapStore.getBitmap();
             rawBitmap = Bitmap.createScaledBitmap(rawBitmap, 640, 640, false);
             imageView.setImageBitmap(rawBitmap);
+            BitmapStore.setBitmap(rawBitmap);
             newBitmap = rawBitmap;
         }
 
