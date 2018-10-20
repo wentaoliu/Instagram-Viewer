@@ -32,9 +32,7 @@ import okhttp3.Response;
 
 import static android.R.layout.simple_list_item_1;
 
-/**
- * Created by mvince on 1/25/15.
- */
+
 public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> implements View.OnClickListener {
     private UserFeedFragment fragment;
     public InstagramPhotosAdapter(UserFeedFragment context, List<InstagramPhoto> photos) {

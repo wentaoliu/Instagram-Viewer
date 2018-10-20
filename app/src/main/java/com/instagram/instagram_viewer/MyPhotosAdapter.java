@@ -25,9 +25,6 @@ import okhttp3.Response;
 
 import static android.R.layout.simple_list_item_1;
 
-/**
- * Created by mvince on 1/25/15.
- */
 public class MyPhotosAdapter extends ArrayAdapter<InstagramPhoto> implements View.OnClickListener {
     private Context context;
     public MyPhotosAdapter(Context context, List<InstagramPhoto> photos) {

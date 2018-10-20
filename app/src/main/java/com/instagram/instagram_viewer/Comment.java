@@ -5,9 +5,7 @@ import android.support.v4.util.LongSparseArray;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-/**
- * Created by mvince on 1/26/15.
- */
+
 public class Comment {
     public String profileUrl;
     public String username;

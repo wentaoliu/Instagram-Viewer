@@ -24,9 +24,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.List;
 
-/**
- * Created by mvince on 1/26/15.
- */
+
 public class CommentsAdapter extends BaseAdapter {
     Context context;
     List<Comment> comments;

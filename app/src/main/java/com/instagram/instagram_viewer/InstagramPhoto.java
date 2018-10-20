@@ -5,9 +5,7 @@ import android.graphics.Bitmap;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-/**
- * Created by mvince on 1/25/15.
- */
+
 public class InstagramPhoto {
     // username, caption, image_url, height, likes_count
     public String username;

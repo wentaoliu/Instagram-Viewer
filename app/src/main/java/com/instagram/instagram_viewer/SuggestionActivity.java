@@ -86,7 +86,7 @@ public class SuggestionActivity extends AppCompatActivity {
         // https://api.instagram.com/v1/media/popular?client_id=<clientid>
         // { "data" => [x] => "images" => "standard_resolution" => "url" }
         // Setup popular url endpoint
-        String popularUrl = "http://imitagram.wnt.io/media/media-id/likes";
+        String popularUrl = "http://imitagram.wnt.io/users/self/suggest";
 
         get(popularUrl,token);
 

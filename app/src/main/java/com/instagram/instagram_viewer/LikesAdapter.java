@@ -21,9 +21,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-/**
- * Created by mvince on 1/26/15.
- */
 public class LikesAdapter extends BaseAdapter {
     Context context;
     List<Like> likes;
