@@ -27,22 +27,22 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    compile 'com.squareup.okhttp3:okhttp:3.11.0'
-    compile 'com.android.support:design:25.0.1'
+    api 'com.squareup.okhttp3:okhttp:3.11.0'
+    api 'com.android.support:design:25.0.1'
 
-    compile 'org.apache.httpcomponents:httpcore:4.4.2'
+    api 'org.apache.httpcomponents:httpcore:4.4.2'
 
-    compile 'com.loopj.android:android-async-http:1.4.9'
+    api 'com.loopj.android:android-async-http:1.4.9'
 
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.jakewharton:butterknife:8.8.1'
+    api 'com.android.support:appcompat-v7:23.1.1'
+    api 'com.squareup.picasso:picasso:2.5.2'
+    api 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    compile 'com.makeramen:roundedimageview:2.2.1'
+    api 'com.makeramen:roundedimageview:2.2.1'
 
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    implementation 'com.google.code.gson:gson:2.8.5'
+    api 'com.android.support:recyclerview-v7:23.1.1'
+    api 'com.google.code.gson:gson:2.8.5'
 
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
