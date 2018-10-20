@@ -118,7 +118,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="4dp"
-                                android:text="Followers"
+                                android:text="Following"
                                 android:textSize="12sp"
                                 android:textColor="@color/txtgrey"/>
 
@@ -137,7 +137,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="4dp"
-                                android:text="Following"
+                                android:text="Followers"
                                 android:textSize="12sp"
                                 android:textColor="@color/txtgrey"/>
 
