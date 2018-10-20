@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.net.Uri;
@@ -202,7 +203,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         @Override
         public void onPictureTaken(byte[] data, Camera camera){
             Log.d("onPictureTaken","---------onPictureTaken begins-------");
-            Bitmap cameraBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+            Bitmap bm = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            Bitmap cameraBitmap = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
 
 //          1.create a directory to save image
             File storagePath = new File(Environment.getExternalStorageDirectory()
